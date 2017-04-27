@@ -1,3 +1,32 @@
-<h1>
-  {{title}}
-</h1>
+<div class="content">
+  <h1>
+    Rx devtools
+  </h1>
+
+  <h3>Operators used</h3>
+  <div *ngFor="let operator of operators2">
+    <table>
+      <tr>
+        <th>Operator</th>
+        <th>Values</th>
+      </tr>
+      <tr>
+        <td>{{operator.operatorId.substring(0, operator.operatorId.indexOf("-"))}}</td>
+        <td>{{operator.values.length}}</td>
+      </tr>
+    </table>
+
+
+    <h3>{{operator.operatorId.substring(0, operator.operatorId.indexOf("-"))}}</h3>
+    <table>
+      <tr>
+        <th>Time</th>
+        <th>Value</th>
+      </tr>
+      <tr *ngFor="let value of operator.values">
+        <td>{{value.time}}</td>
+        <td>{{value.value}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
