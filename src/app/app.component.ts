@@ -134,10 +134,11 @@ export class AppComponent {
       .map(res => res.json())
       .map(val => val.name);
 
-    obs$.subscribe(console.log,
-      () => {},
-      () => createASCII()
-    );
+    obs$.subscribe(console.log);
+  }
+
+  public createASCIIInComponent() {
+    createASCII();
   }
 }
 
