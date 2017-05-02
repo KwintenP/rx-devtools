@@ -2,19 +2,33 @@ import {monkeyPathLift, monkeyPathNext, monkeyPathOperator} from "./util/monkey_
 import {MapOperator} from "rxjs/operator/map";
 import {MergeMapOperator} from "rxjs/operator/mergeMap";
 
-import "add/operator/debug";
-import "operator/debug";
-import "util/monkey_patch";
+import "./add/operator/debug";
+import "./operator/debug";
+import "./util/monkey_patch";
+import {DebugOperator} from "./operator/debug";
+import {CombineLatestOperator} from "rxjs/operator/combineLatest";
 
 export const operators: Array<{ operatorId: string, values: Array<{ time: number, value: any }> }> = [];
 
 monkeyPathLift();
+monkeyPathOperator(DebugOperator);
 monkeyPathOperator(MapOperator);
+monkeyPathOperator(BufferOperator);
 monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(MergeMapOperator);
+monkeyPathOperator(CombineLatestOperator);
 monkeyPathNext();
 
 export const createASCII = function () {
-  console.log(operators);
+  console.log("operators", operators);
   /*const ascii = [];
   let max = 0;
   let min = Infinity;

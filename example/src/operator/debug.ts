@@ -1,7 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import {Operator} from "rxjs/Operator";
 import {Subscriber} from "rxjs/Subscriber";
-import uuid from "uuid/v1";
+import uuid from "uuid";
 
 export function debug(): Observable<any> {
   // Assign an id to the current observable being lifted. This way we can identify
