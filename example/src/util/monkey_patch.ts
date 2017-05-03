@@ -25,10 +25,16 @@ export const monkeyPathLift = function () {
       (operator as any).__rx_operator_dev_tools_id = "debug-" + uuid();
       (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
       if (operators[this.__rx_observable_dev_tools_id]) {
-        operators[this.__rx_observable_dev_tools_id].operators.push({operatorId: (operator as any).__rx_operator_dev_tools_id, values: []});
+        operators[this.__rx_observable_dev_tools_id].operators.push({
+          operatorId: (operator as any).__rx_operator_dev_tools_id,
+          values: []
+        });
       } else {
-        operators[this.__rx_observable_dev_tools_id].operators = [];
-        operators[this.__rx_observable_dev_tools_id].operators.push({operatorId: (operator as any).__rx_operator_dev_tools_id, values: []});
+        operators[this.__rx_observable_dev_tools_id] = {operators: []};
+        operators[this.__rx_observable_dev_tools_id].operators.push({
+          operatorId: (operator as any).__rx_operator_dev_tools_id,
+          values: []
+        });
       }
       return newObs;
     } else {
@@ -39,9 +45,12 @@ export const monkeyPathLift = function () {
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
         if (!operators[this.__rx_observable_dev_tools_id]) {
-          operators[this.__rx_observable_dev_tools_id].operators = [];
+          operators[this.__rx_observable_dev_tools_id] = {operators: []};
         }
-        operators[this.__rx_observable_dev_tools_id].operators.push({operatorId: (operator as any).__rx_operator_dev_tools_id, values: []});
+        operators[this.__rx_observable_dev_tools_id].operators.push({
+          operatorId: (operator as any).__rx_operator_dev_tools_id,
+          values: []
+        });
         (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the next observable as well
@@ -59,17 +68,21 @@ export const monkeyPathLift = function () {
           return originalLift.apply(this, [operator]);
         }
 
-        this.array.forEach(obs => {
-          operators[this.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
-        });
+
         monkeyPathOperator(operator);
         const newObs = originalLift.apply(this, [operator])
         // Assign the observable dev tools id to the newly lifted observable
         newObs.__rx_observable_dev_tools_id = uuid();
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
-        operators[this.__rx_observable_dev_tools_id].operators = [];
-        operators[this.__rx_observable_dev_tools_id].operators.push({operatorId: (operator as any).__rx_operator_dev_tools_id, values: []});
+        operators[this.__rx_observable_dev_tools_id] = {operators: [], obsParents: []};
+        operators[this.__rx_observable_dev_tools_id].operators.push({
+          operatorId: (operator as any).__rx_operator_dev_tools_id,
+          values: []
+        });
+        this.array.forEach(obs => {
+          operators[this.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
+        });
         return newObs;
       }
       return originalLift.apply(this, [operator]);
