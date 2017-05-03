@@ -7,6 +7,8 @@ export function debug(): Observable<any> {
   // Assign an id to the current observable being lifted. This way we can identify
   // which observable should be debugged.
   (this as any).__rx_observable_dev_tools_id = uuid();
+  console.log("debug uuid generated");
+  console.log((this as any).__rx_observable_dev_tools_id);
   return this.lift(new DebugOperator());
 }
 
