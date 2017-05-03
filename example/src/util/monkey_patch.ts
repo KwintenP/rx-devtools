@@ -18,7 +18,7 @@ export const monkeyPathLift = function () {
   const originalLift = Observable.prototype.lift;
   Observable.prototype.lift = function (operator) {
     if (operator instanceof DebugOperator) {
-      const newObs = originalLift.apply(this, [operator])
+      const newObs = originalLift.apply(this, [operator]);
       // Assign the observable dev tools id to the newly lifted observable
       newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
       // Generate an operator id and assign it to the operator to link the next event to the correct operator
@@ -30,7 +30,7 @@ export const monkeyPathLift = function () {
           values: []
         });
       } else {
-        operators[this.__rx_observable_dev_tools_id] = {operators: []};
+        operators[this.__rx_observable_dev_tools_id] = {operators: [], standalone: true};
         operators[this.__rx_observable_dev_tools_id].operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
           values: []
@@ -45,7 +45,7 @@ export const monkeyPathLift = function () {
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
         if (!operators[this.__rx_observable_dev_tools_id]) {
-          operators[this.__rx_observable_dev_tools_id] = {operators: []};
+          operators[this.__rx_observable_dev_tools_id] = {operators: [], standalone: true};
         }
         operators[this.__rx_observable_dev_tools_id].operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
@@ -70,18 +70,19 @@ export const monkeyPathLift = function () {
 
 
         monkeyPathOperator(operator);
-        const newObs = originalLift.apply(this, [operator])
+        const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the newly lifted observable
         newObs.__rx_observable_dev_tools_id = uuid();
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
-        operators[this.__rx_observable_dev_tools_id] = {operators: [], obsParents: []};
-        operators[this.__rx_observable_dev_tools_id].operators.push({
+        operators[newObs.__rx_observable_dev_tools_id] = {operators: [], obsParents: [], standalone: true};
+        operators[newObs.__rx_observable_dev_tools_id].operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
-          values: []
+          values: [],
         });
         this.array.forEach(obs => {
-          operators[this.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
+          operators[newObs.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
+          operators[obs.__rx_observable_dev_tools_id].standalone = false;
         });
         return newObs;
       }
@@ -104,4 +105,4 @@ export const monkeyPathNext = function () {
     }
     return next.call(this, args);
   };
-}
+};

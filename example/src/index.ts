@@ -4,7 +4,13 @@ import "./add/operator/debug";
 import "./operator/debug";
 import "./util/monkey_patch";
 
-export const operators: { [obsId: string]: { operators: Array<{ operatorId: string, values: Array<{ time: number, value: any }> }>, obsParents?: string[] } } = {};
+export const operators: {
+  [obsId: string]: {
+    operators: Array<{ operatorId: string, values: Array<{ time: number, value: any }> }>,
+    obsParents?: string[],
+    standalone: boolean
+  }
+} = {};
 
 monkeyPathLift();
 monkeyPathNext();
