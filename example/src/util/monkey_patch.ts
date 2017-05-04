@@ -3,13 +3,20 @@ import {Subscriber} from "rxjs/Subscriber";
 import {DebugOperator} from "../operator/debug";
 import uuid from "uuid/v4";
 import {operators} from "../index";
-export const monkeyPathOperator = function (operator) {
+export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
     // Take the operator devtools id and assign it to the subscriber. This is used to assign the
     // 'next' on the subscriber to the correct operator in the chain.
+
+    console.log("operator", this.__rx_operator_dev_tools_id);
     (subscriber as any).__rx_operator_dev_tools_id = this.__rx_operator_dev_tools_id;
-    (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
+    if (!observableDevToolsId) {
+      (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
+    } else {
+      (subscriber as any).__rx_observable_dev_tools_id = observableDevToolsId
+    }
+    console.log("subscriber", subscriber.__rx_operator_dev_tools_id);
     return originalOperatorCall.call(this, subscriber, source);
   };
 };
@@ -18,6 +25,7 @@ export const monkeyPathLift = function () {
   const originalLift = Observable.prototype.lift;
   Observable.prototype.lift = function (operator) {
     if (operator instanceof DebugOperator) {
+      monkeyPathOperator(operator);
       const newObs = originalLift.apply(this, [operator]);
       // Assign the observable dev tools id to the newly lifted observable
       newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
@@ -69,10 +77,10 @@ export const monkeyPathLift = function () {
         }
 
 
-        monkeyPathOperator(operator);
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the newly lifted observable
         newObs.__rx_observable_dev_tools_id = uuid();
+        monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
         operators[newObs.__rx_observable_dev_tools_id] = {operators: [], obsParents: [], standalone: true};
@@ -96,6 +104,7 @@ export const monkeyPathNext = function () {
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
       console.log("next called", args);
+      console.log("this.__rx operatre id", this.__rx_operator_dev_tools_id);
       const foundOperator = operators[this.__rx_observable_dev_tools_id].operators.find(operator => {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
       });
