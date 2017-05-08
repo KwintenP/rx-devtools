@@ -28,21 +28,21 @@ export const createASCII = function () {
   //   })
   //   console.log("marbleString" + marbleString);
   // });
-  for(let key of Object.keys(operators)) {
-    let operator = operators[key];
-    if(!operator.standalone) {
-      console.log("----- Operator "+ Object.keys(operators).indexOf(key) +"----");
-      generateAscii(operator.operators);
-    }
-  }
-
-  for(let key of Object.keys(operators)) {
-    let operator = operators[key];
-    if(operator.standalone) {
-      console.log("----- Combination Operator --------");
-      generateAscii(operator.operators);
-    }
-  }
+  // for(let key of Object.keys(operators)) {
+  //   let operator = operators[key];
+  //   if(!operator.standalone) {
+  //     console.log("----- Operator "+ Object.keys(operators).indexOf(key) +"----");
+  //     generateAscii(operator.operators);
+  //   }
+  // }
+  //
+  // for(let key of Object.keys(operators)) {
+  //   let operator = operators[key];
+  //   if(operator.standalone) {
+  //     console.log("----- Combination Operator --------");
+  //     generateAscii(operator.operators);
+  //   }
+  // }
 
 }
 

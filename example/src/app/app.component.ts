@@ -13,7 +13,7 @@ import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/filter";
 import "../add/operator/debug";
-import {createASCII} from "../index";
+import {createASCII, operators} from "../index";
 
 @Component({
   selector: 'app-root',
@@ -22,6 +22,7 @@ import {createASCII} from "../index";
 })
 export class AppComponent {
   title = 'app works!';
+  operators2 = operators;
 
   constructor(private http: Http) {
     console.log("called");
@@ -31,6 +32,7 @@ export class AppComponent {
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
+      .filter(_ => true)
       .map(val => val.name);
 
     // const obs$ = Observable.combineLatest(Observable.of(1, 2, 3, 4).debug(), Observable.interval(1000).skip(1).debug().take(5),

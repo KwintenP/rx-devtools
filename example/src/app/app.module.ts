@@ -4,15 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import {CommonModule} from "@angular/common";
+import {KeysPipe} from "./keys.pipe";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    KeysPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

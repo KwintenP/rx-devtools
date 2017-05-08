@@ -108,6 +108,7 @@ export const monkeyPathNext = function () {
       const foundOperator = operators[this.__rx_observable_dev_tools_id].operators.find(operator => {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
       });
+      console.log("foundOperator", foundOperator);
       if (foundOperator) {
         foundOperator.values.push({time: new Date().getTime(), value: args});
       }
