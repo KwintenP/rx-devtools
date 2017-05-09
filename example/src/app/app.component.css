@@ -35,3 +35,23 @@
   position: absolute;
   top: calc(41px);
 }
+
+.marbleLocation {
+  position: absolute;
+  left: calc(70px);
+  right: calc(70px);
+  top: calc(48px);
+  height: 44px;
+  margin-top: calc(-22px);
+}
+
+.marbleContent {
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0px;
+  top: 0px;
+  text-align: center;
+  line-height: 32px;
+}
