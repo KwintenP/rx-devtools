@@ -4,9 +4,9 @@ import "./add/operator/debug";
 import "./operator/debug";
 import "./util/monkey_patch";
 
-export const operators: {
+export const observables: {
   [obsId: string]: {
-    operators: Array<{ operatorId: string, values: Array<{ time: number, value: any }> }>,
+    operators: Array<{operatorName?: string, operatorId: string, values: Array<{ time: number, value: any }> }>,
     obsParents?: string[],
     standalone: boolean
   }
@@ -16,8 +16,8 @@ monkeyPathLift();
 monkeyPathNext();
 
 export const createASCII = function () {
-  console.log("operators", operators);
-  // operators.forEach((operator) => {
+  // console.log("observables", observables);
+  // observables.forEach((operator) => {
   //   let marbleString = "";
   //   operator.values.forEach((value) => {
   //     if (value.value) {
@@ -28,19 +28,19 @@ export const createASCII = function () {
   //   })
   //   console.log("marbleString" + marbleString);
   // });
-  // for(let key of Object.keys(operators)) {
-  //   let operator = operators[key];
+  // for(let key of Object.keys(observables)) {
+  //   let operator = observables[key];
   //   if(!operator.standalone) {
-  //     console.log("----- Operator "+ Object.keys(operators).indexOf(key) +"----");
-  //     generateAscii(operator.operators);
+  //     console.log("----- Operator "+ Object.keys(observables).indexOf(key) +"----");
+  //     generateAscii(operator.observables);
   //   }
   // }
   //
-  // for(let key of Object.keys(operators)) {
-  //   let operator = operators[key];
+  // for(let key of Object.keys(observables)) {
+  //   let operator = observables[key];
   //   if(operator.standalone) {
   //     console.log("----- Combination Operator --------");
-  //     generateAscii(operator.operators);
+  //     generateAscii(operator.observables);
   //   }
   // }
 
