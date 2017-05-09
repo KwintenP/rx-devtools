@@ -13,7 +13,7 @@ import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/filter";
 import "../add/operator/debug";
-import {createASCII, operators} from "../index";
+import {createASCII, observables} from "../index";
 
 @Component({
   selector: 'app-root',
@@ -22,10 +22,9 @@ import {createASCII, operators} from "../index";
 })
 export class AppComponent {
   title = 'app works!';
-  operators2 = operators;
+  observables2 = observables;
 
   constructor(private http: Http) {
-    console.log("called");
     const obs$ = Observable.of(1, 2, 3, 4)
       .debug()
       .combineLatest(Observable.interval(1000).debug().skip(1).take(2), (val, val2) => val * val2)
@@ -42,7 +41,7 @@ export class AppComponent {
     //   .map(res => res.json())
     //   .map(val => val.name);
 
-    obs$.subscribe();
+    obs$.subscribe(console.log);
   }
 
   public createASCIIInComponent() {

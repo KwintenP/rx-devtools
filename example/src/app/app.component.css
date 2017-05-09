@@ -1,8 +1,37 @@
-table, th, td {
-  border: 1px solid black;
+.sandboxRoot {
+  background: rgb(255, 255, 255);
+  width: 820px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px 1px 2px 1px;
 }
 
-.content {
-  display: flex;
+.sandboxInputDiagram {
+  user-select: none;
+  overflow: visible;
+  display: block;
+  width: 100%;
+  height: calc(96px);
+  position: relative;
+  cursor: default;
+}
 
+.diagramArrow {
+  background-color: rgb(50, 50, 50);
+  height: 2px;
+  position: absolute;
+  top: calc(48px);
+  left: 22px;
+  right: 22px;
+}
+
+.diagramArrowHead {
+  width: 0px;
+  height: 0px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: calc(16px) solid rgb(50, 50, 50);
+  display: inline-block;
+  right: calc(21px);
+  position: absolute;
+  top: calc(41px);
 }
