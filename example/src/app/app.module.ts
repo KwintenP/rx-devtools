@@ -6,11 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {CommonModule} from "@angular/common";
 import {KeysPipe} from "./keys.pipe";
+import { MarbleComponent } from './components/marble/marble.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    KeysPipe
+    KeysPipe,
+    MarbleComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,32 @@
+svg {
+  overflow: visible;
+  width: 32px;
+  height: 32px;
+}
+
+circle {
+  stroke: rgb(50, 50, 50);
+  fill: rgb(130, 215, 54);
+}
+
+.marbleContent {
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0px;
+  top: 0px;
+  text-align: center;
+  line-height: 32px;
+}
+
+.diagramMarble {
+  display: inline-block;
+  position: relative;
+  cursor: ew-resize;
+  width: 32px;
+  height: 32px;
+  bottom: calc((100% - 32px) / 2);
+  margin: calc(-16px);
+  z-index: 1;
+}
