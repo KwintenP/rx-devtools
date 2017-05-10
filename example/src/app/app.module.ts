@@ -7,12 +7,18 @@ import { AppComponent } from './app.component';
 import {CommonModule} from "@angular/common";
 import {KeysPipe} from "./keys.pipe";
 import { MarbleComponent } from './components/marble/marble.component';
+import { MarbleLineComponent } from './components/marble-line/marble-line.component';
+import { MarbleDiagramComponent } from './components/marble-diagram/marble-diagram.component';
+import { OperatorComponent } from './components/operator/operator.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     KeysPipe,
-    MarbleComponent
+    MarbleComponent,
+    MarbleLineComponent,
+    MarbleDiagramComponent,
+    OperatorComponent
   ],
   imports: [
     BrowserModule,
