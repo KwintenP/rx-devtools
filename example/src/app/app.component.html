@@ -1,6 +1,13 @@
 <div class="sandboxRoot">
-  <app-marble-diagram></app-marble-diagram>
-  <app-marble-diagram></app-marble-diagram>
-  <app-operator [name]="'CombineLatest'"></app-operator>
-  <app-marble-diagram></app-marble-diagram>
+  <div *ngFor="let observable of observables2 | keys">
+    <div *ngFor="let operator of observable.value.operators">
+      <app-operator [name]="operator.operatorName"></app-operator>
+      <app-marble-diagram (valueSelected)="this.valueSelected = $event"
+                          [values]="operator.values"></app-marble-diagram>
+    </div>
+  </div>
 </div>
+
+<pre>
+  {{valueSelected | json}}
+</pre>

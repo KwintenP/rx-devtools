@@ -23,7 +23,7 @@ circle {
 .diagramMarble {
   display: inline-block;
   position: relative;
-  cursor: ew-resize;
+  cursor: pointer;
   width: 32px;
   height: 32px;
   bottom: calc((100% - 32px) / 2);

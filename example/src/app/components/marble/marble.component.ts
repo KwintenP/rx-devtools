@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-marble',
@@ -10,10 +10,17 @@ export class MarbleComponent implements OnInit {
   left;
   @Input()
   value;
+  @Input()
+  index;
+  @Output()
+  valueSelected = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  valueSelectedEvent() {
+    this.valueSelected.emit(this.value);
+  }
 }

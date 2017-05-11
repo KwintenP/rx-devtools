@@ -23,11 +23,12 @@ import {createASCII, observables} from "../index";
 export class AppComponent {
   title = 'app works!';
   observables2 = observables;
+  valueSelected;
 
   constructor(private http: Http) {
     const obs$ = Observable.of(1, 2, 3, 4)
       .debug()
-      .combineLatest(Observable.interval(1000).debug().skip(1).take(2), (val, val2) => val * val2)
+      // .combineLatest(Observable.interval(1000).debug().skip(1).take(2), (val, val2) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
