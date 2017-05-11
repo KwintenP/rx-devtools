@@ -2,7 +2,7 @@ import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
 import {DebugOperator} from "../operator/debug";
 import uuid from "uuid/v4";
-import {observables} from "../index";
+import {observables, percentage} from "../index";
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
@@ -13,7 +13,7 @@ export const monkeyPathOperator = function (operator, observableDevToolsId?) {
     if (!observableDevToolsId) {
       (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
     } else {
-      (subscriber as any).__rx_observable_dev_tools_id = observableDevToolsId
+      (subscriber as any).__rx_observable_dev_tools_id = observableDevToolsId;
     }
     return originalOperatorCall.call(this, subscriber, source);
   };
@@ -109,7 +109,7 @@ export const monkeyPathNext = function () {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
       });
       if (foundOperator) {
-        foundOperator.values.push({time: new Date().getTime(), value: args});
+        foundOperator.values.push({percentage, value: args});
       }
     }
     return next.call(this, args);

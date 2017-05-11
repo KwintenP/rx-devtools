@@ -3,14 +3,22 @@ import {monkeyPathLift, monkeyPathNext} from "./util/monkey_patch";
 import "./add/operator/debug";
 import "./operator/debug";
 import "./util/monkey_patch";
+import {Observable} from "rxjs/Observable";
 
 export const observables: {
   [obsId: string]: {
-    operators: Array<{operatorName?: string, operatorId: string, values: Array<{ time: number, value: any }> }>,
+    operators: Array<{ operatorName?: string, operatorId: string, values: Array<{ percentage: number, value: any }> }>,
     obsParents?: string[],
     standalone: boolean
   }
 } = {};
+
+export let percentage = 0;
+const timeWindow = 5000;
+
+Observable.interval(timeWindow / 100)
+  .take(100)
+  .subscribe((val) => percentage = val);
 
 monkeyPathLift();
 monkeyPathNext();
