@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  flex-direction: row;
+}
+
+.item {
+  width: 50%;
+  max-width: 50%;
+  font-size: 150%;
+  overflow-x: scroll;
+}
+
+.item-value {
+  display: block;
+}
