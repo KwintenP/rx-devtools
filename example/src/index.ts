@@ -17,7 +17,7 @@ export const observables: {
 } = {};
 
 export let percentage = 0;
-const timeWindow = 1000;
+const timeWindow = 2500;
 
 Observable.interval(timeWindow / 100)
   .take(100)

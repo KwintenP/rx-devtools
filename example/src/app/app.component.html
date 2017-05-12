@@ -8,10 +8,13 @@
   </div>
   <div class="sandboxRoot item">
     <div *ngIf="observableSelected">
-      <div *ngIf="observableSelected.standalone; else elseBlock">
-
+      <div *ngIf="observableSelected.value.standalone; else elseBlock">
+        <div *ngFor="let parentObs of observableSelected.value.obsParents">
+          <app-marble-diagram (valueSelected)="this.valueSelected = $event"
+                              [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
+        </div>
       </div>
-      <div #elseBlock *ngFor="let operator of observableSelected.value.operators">
+      <div *ngFor="let operator of observableSelected.value.operators">
         <app-operator [name]="operator.operatorName"></app-operator>
         <app-marble-diagram (valueSelected)="this.valueSelected = $event"
                             [values]="operator.values"></app-marble-diagram>

@@ -29,7 +29,8 @@ export class AppComponent {
   constructor(private http: Http) {
     const obs$ = Observable.of(1, 2, 3, 4)
       .debug("first")
-      .combineLatest(Observable.interval(1000).debug("second").skip(1).take(2), (val, val2) => val * val2)
+      .combineLatest(Observable.interval(1000).debug("second").map(val => val + 1).take(2).do(console.log))
+      .map(([val, val2]) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
@@ -52,5 +53,9 @@ export class AppComponent {
 
   observableSelectedInList(observable: RxDevtoolsObservable) {
     this.observableSelected = observable;
+  }
+
+  getLastMarbleDiagram(observableId: string) {
+    return this.observables2[observableId].operators[this.observables2[observableId].operators.length - 1].values;
   }
 }
