@@ -3,15 +3,15 @@ import {Operator} from "rxjs/Operator";
 import {Subscriber} from "rxjs/Subscriber";
 import uuid from "uuid";
 
-export function debug(): Observable<any> {
+export function debug(name?: string): Observable<any> {
   // Assign an id to the current observable being lifted. This way we can identify
   // which observable should be debugged.
   (this as any).__rx_observable_dev_tools_id = uuid();
-  return this.lift(new DebugOperator());
+  return this.lift(new DebugOperator(name));
 }
 
 export class DebugOperator<T, R> implements Operator<T, R> {
-  constructor() {
+  constructor(public name?: string) {
   }
 
   call(subscriber: Subscriber<R>, source: any): any {

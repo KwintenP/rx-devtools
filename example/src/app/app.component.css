@@ -3,8 +3,24 @@
   flex-direction: row;
 }
 
+.list {
+  display: block;
+  width: 20%;
+  max-width: 20%;
+}
+
+ul {
+  list-style-type: none;
+  display: block;
+}
+
+li {
+  padding: 10px 15px;
+  border: 1px solid #ddd
+}
+
 .item {
-  width: 50%;
+  width: 40%;
   max-width: 50%;
   font-size: 150%;
   overflow-x: scroll;

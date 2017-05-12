@@ -13,7 +13,7 @@ import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/filter";
 import "../add/operator/debug";
-import {createASCII, observables} from "../index";
+import {createASCII, observables, RxDevtoolsObservable} from "../index";
 
 @Component({
   selector: 'app-root',
@@ -23,12 +23,13 @@ import {createASCII, observables} from "../index";
 export class AppComponent {
   title = 'app works!';
   observables2 = observables;
+  observableSelected: RxDevtoolsObservable;
   valueSelected;
 
   constructor(private http: Http) {
     const obs$ = Observable.of(1, 2, 3, 4)
-      .debug()
-      // .combineLatest(Observable.interval(1000).debug().skip(1).take(2), (val, val2) => val * val2)
+      .debug("first")
+      .combineLatest(Observable.interval(1000).debug("second").skip(1).take(2), (val, val2) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
@@ -42,10 +43,14 @@ export class AppComponent {
     //   .map(res => res.json())
     //   .map(val => val.name);
 
-    obs$.subscribe(console.log);
+    obs$.subscribe(_ => console.log(observables));
   }
 
   public createASCIIInComponent() {
     createASCII();
+  }
+
+  observableSelectedInList(observable: RxDevtoolsObservable) {
+    this.observableSelected = observable;
   }
 }

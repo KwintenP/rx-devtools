@@ -5,9 +5,10 @@ import {Pipe} from "@angular/core";
 })
 export class PrettyPrintJsonPipe {
   transform(val) {
-    if (val)
+    if (val) {
       return JSON.stringify(val, null, 2)
         .replace(' ', '&nbsp;')
         .replace('\n', '<br/>');
+    }
   }
 }

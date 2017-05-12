@@ -5,16 +5,19 @@ import "./operator/debug";
 import "./util/monkey_patch";
 import {Observable} from "rxjs/Observable";
 
+export interface RxDevtoolsObservable {
+  operators: Array<{ operatorName?: string, operatorId: string, values: Array<{ percentage: number, value: any }> }>;
+  obsParents?: string[];
+  standalone: boolean;
+  name?: string;
+};
+
 export const observables: {
-  [obsId: string]: {
-    operators: Array<{ operatorName?: string, operatorId: string, values: Array<{ percentage: number, value: any }> }>,
-    obsParents?: string[],
-    standalone: boolean
-  }
+  [obsId: string]: RxDevtoolsObservable
 } = {};
 
 export let percentage = 0;
-const timeWindow = 5000;
+const timeWindow = 1000;
 
 Observable.interval(timeWindow / 100)
   .take(100)
