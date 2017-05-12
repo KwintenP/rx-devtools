@@ -23,6 +23,7 @@ export const monkeyPathLift = function () {
   const originalLift = Observable.prototype.lift;
   Observable.prototype.lift = function (operator) {
     // Check if the operator is a debug operator, if so we will:
+    // - monkeyPatch the operator to be able to get the values from it
     // -
     if (operator instanceof DebugOperator) {
       monkeyPathOperator(operator);
