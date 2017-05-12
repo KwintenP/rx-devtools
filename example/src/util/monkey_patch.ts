@@ -24,6 +24,8 @@ export const monkeyPathLift = function () {
   Observable.prototype.lift = function (operator) {
     // Check if the operator is a debug operator, if so we will:
     // - monkeyPatch the operator to be able to get the values from it
+    // - generate an id for the operator
+    // - generate an id for the observable
     // -
     if (operator instanceof DebugOperator) {
       monkeyPathOperator(operator);
@@ -40,7 +42,6 @@ export const monkeyPathLift = function () {
           values: []
         });
       } else {
-        console.log("entered here");
         observables[this.__rx_observable_dev_tools_id] = {operators: [], standalone: true};
         observables[this.__rx_observable_dev_tools_id].operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
@@ -93,7 +94,7 @@ export const monkeyPathLift = function () {
             this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator"));
           return newObs;
         }
-        // monkeyPathOperator(operator);
+        monkeyPathOperator(operator);
         // Add all the next observables to it
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
@@ -149,6 +150,8 @@ export const monkeyPathLift = function () {
         });
         observables[newObs.__rx_observable_dev_tools_id].name += " " +
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        console.log("adding here", observables[newObs.__rx_observable_dev_tools_id].name);
+        console.log("this", this);
         return newObs;
       }
       return originalLift.apply(this, [operator]);
@@ -159,6 +162,7 @@ export const monkeyPathLift = function () {
 export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
+    console.log("args", args);
     if (this.__rx_observable_dev_tools_id) {
       const foundOperator = observables[this.__rx_observable_dev_tools_id].operators.find(operator => {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
