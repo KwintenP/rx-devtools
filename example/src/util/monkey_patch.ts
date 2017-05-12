@@ -22,6 +22,8 @@ export const monkeyPathOperator = function (operator, observableDevToolsId?) {
 export const monkeyPathLift = function () {
   const originalLift = Observable.prototype.lift;
   Observable.prototype.lift = function (operator) {
+    // Check if the operator is a debug operator, if so we will:
+    // -
     if (operator instanceof DebugOperator) {
       monkeyPathOperator(operator);
       const newObs = originalLift.apply(this, [operator]);
@@ -50,7 +52,47 @@ export const monkeyPathLift = function () {
     } else {
       // if it's an observable we want to debug
       if (this.__rx_observable_dev_tools_id) {
-        monkeyPathOperator(operator);
+        if (!operator) {
+          let stop = false;
+          this.source.array.forEach(obs => {
+            if (!obs.__rx_observable_dev_tools_id) {
+              stop = true;
+            }
+          });
+          if (stop) {
+            return originalLift.apply(this);
+          }
+
+
+          const newObs = originalLift.apply(this);
+          // Assign the observable dev tools id to the newly lifted observable
+          newObs.__rx_observable_dev_tools_id = uuid();
+          monkeyPathOperator(this.operator, newObs.__rx_observable_dev_tools_id);
+          (this.operator as any).__rx_operator_dev_tools_id =
+            this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator")) + "-" + uuid();
+          observables[newObs.__rx_observable_dev_tools_id] = {
+            operators: [],
+            obsParents: [],
+            standalone: true,
+            name: ""
+          };
+          observables[newObs.__rx_observable_dev_tools_id].operators.push({
+            operatorId: (this.operator as any).__rx_operator_dev_tools_id,
+            values: [],
+            operatorName: this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator"))
+          });
+          this.source.array.forEach(obs => {
+            observables[newObs.__rx_observable_dev_tools_id].name +=
+              ((observables[newObs.__rx_observable_dev_tools_id].name !== "") ? "-" : "") +
+              observables[obs.__rx_observable_dev_tools_id].name;
+            observables[newObs.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
+            observables[obs.__rx_observable_dev_tools_id].standalone = false;
+          });
+          observables[newObs.__rx_observable_dev_tools_id].name += " " +
+            this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator"));
+          return newObs;
+        }
+        // monkeyPathOperator(operator);
         // Add all the next observables to it
         (operator as any).__rx_operator_dev_tools_id =
           operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
@@ -127,3 +169,4 @@ export const monkeyPathNext = function () {
     return next.call(this, args);
   };
 };
+

@@ -9,6 +9,7 @@ import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/combineLatest";
 import "rxjs/add/operator/combineLatest";
+import "rxjs/add/operator/merge";
 import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/filter";
@@ -29,7 +30,7 @@ export class AppComponent {
   constructor(private http: Http) {
     const obs$ = Observable.of(1, 2, 3, 4)
       .debug("first")
-      .combineLatest(Observable.interval(1000).debug("second").map(val => val + 1).take(2).do(console.log))
+      .merge(Observable.interval(1000).debug("second").map(val => val + 1).take(2).do(console.log))
       .map(([val, val2]) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
