@@ -12,7 +12,7 @@ export interface RxDevtoolsObservable {
   name?: string;
 };
 
-export const observables: {
+export const rxDevtoolsObservables: {
   [obsId: string]: RxDevtoolsObservable
 } = {};
 
@@ -27,8 +27,8 @@ monkeyPathLift();
 monkeyPathNext();
 
 export const createASCII = function () {
-  // console.log("observables", observables);
-  // observables.forEach((operator) => {
+  // console.log("rxDevtoolsObservables", rxDevtoolsObservables);
+  // rxDevtoolsObservables.forEach((operator) => {
   //   let marbleString = "";
   //   operator.values.forEach((value) => {
   //     if (value.value) {
@@ -39,19 +39,19 @@ export const createASCII = function () {
   //   })
   //   console.log("marbleString" + marbleString);
   // });
-  // for(let key of Object.keys(observables)) {
-  //   let operator = observables[key];
+  // for(let key of Object.keys(rxDevtoolsObservables)) {
+  //   let operator = rxDevtoolsObservables[key];
   //   if(!operator.standalone) {
-  //     console.log("----- Operator "+ Object.keys(observables).indexOf(key) +"----");
-  //     generateAscii(operator.observables);
+  //     console.log("----- Operator "+ Object.keys(rxDevtoolsObservables).indexOf(key) +"----");
+  //     generateAscii(operator.rxDevtoolsObservables);
   //   }
   // }
   //
-  // for(let key of Object.keys(observables)) {
-  //   let operator = observables[key];
+  // for(let key of Object.keys(rxDevtoolsObservables)) {
+  //   let operator = rxDevtoolsObservables[key];
   //   if(operator.standalone) {
   //     console.log("----- Combination Operator --------");
-  //     generateAscii(operator.observables);
+  //     generateAscii(operator.rxDevtoolsObservables);
   //   }
   // }
 

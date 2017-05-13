@@ -2,13 +2,11 @@ import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
 import {DebugOperator} from "../operator/debug";
 import uuid from "uuid/v4";
-import {observables, percentage} from "../index";
+import {percentage, RxDevtoolsObservable, rxDevtoolsObservables} from "../index";
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
+  operator.monkeyPatched = true;
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
-    // Take the operator devtools id and assign it to the subscriber. This is used to assign the
-    // 'next' on the subscriber to the correct operator in the chain.
-
     (subscriber as any).__rx_operator_dev_tools_id = this.__rx_operator_dev_tools_id;
     if (!observableDevToolsId) {
       (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
@@ -21,40 +19,42 @@ export const monkeyPathOperator = function (operator, observableDevToolsId?) {
 
 export const monkeyPathLift = function () {
   const originalLift = Observable.prototype.lift;
-  Observable.prototype.lift = function (operator) {
+  Observable.prototype.lift = function (operator: any) {
     // Check if the operator is a debug operator, if so we will:
     // - monkeyPatch the operator to be able to get the values from it
     // - generate an id for the operator and attach it
     // - generate an id for the observable and attach it
-    // -
+    // - add a new rxDevToolsObservable entry
     if (operator instanceof DebugOperator) {
-      monkeyPathOperator(operator);
+      if (!(operator as any).monkeyPatched) {
+        monkeyPathOperator(operator);
+      }
+      // Execute the original function and take the resulting observable
       const newObs = originalLift.apply(this, [operator]);
       // Assign the observable dev tools id to the newly lifted observable
       newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
-      // Generate an operator id and assign it to the operator to link the next event to the correct operator
+      // Generate an operator id and assign it to the operator to link the
+      // next event to the correct operator
       (operator as any).__rx_operator_dev_tools_id = "debug-" + uuid();
       (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
-      if (observables[this.__rx_observable_dev_tools_id]) {
-        observables[this.__rx_observable_dev_tools_id].operators.push({
-          operatorName: "debug",
-          operatorId: (operator as any).__rx_operator_dev_tools_id,
-          values: []
-        });
-      } else {
-        observables[this.__rx_observable_dev_tools_id] = {operators: [], standalone: true};
-        observables[this.__rx_observable_dev_tools_id].operators.push({
-          operatorId: (operator as any).__rx_operator_dev_tools_id,
-          values: [],
-          operatorName: "debug",
-        });
-      }
-      observables[this.__rx_observable_dev_tools_id].name = operator.name;
+      // Add it to the rxDevtoolsObservables object
+      const rxDevtoolsObservable: RxDevtoolsObservable = {operators: [], standalone: true, name: operator.name};
+      rxDevtoolsObservable.operators.push({
+        operatorId: (operator as any).__rx_operator_dev_tools_id,
+        values: [],
+        operatorName: "debug",
+      });
+      rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
       return newObs;
     } else {
       // if it's an observable we want to debug
       if (this.__rx_observable_dev_tools_id) {
+        // if it doesn't have en operator, we are probably dealing with an
+        // array observable. In this case we just need to re-assign the
+        // observable identifier to the new one
         if (!operator) {
+          // check to see if all of the sources are observables we are
+          // debugging
           let stop = false;
           this.source.array.forEach(obs => {
             if (!obs.__rx_observable_dev_tools_id) {
@@ -64,47 +64,20 @@ export const monkeyPathLift = function () {
           if (stop) {
             return originalLift.apply(this);
           }
-
-
           const newObs = originalLift.apply(this);
           // Assign the observable dev tools id to the newly lifted observable
           newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
-          monkeyPathOperator(this.operator, newObs.__rx_observable_dev_tools_id);
-          (this.operator as any).__rx_operator_dev_tools_id =
-            this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator")) + "-" + uuid();
-          observables[newObs.__rx_observable_dev_tools_id] = {
-            operators: [],
-            obsParents: [],
-            standalone: true,
-            name: ""
-          };
-          observables[newObs.__rx_observable_dev_tools_id].operators.push({
-            operatorId: (this.operator as any).__rx_operator_dev_tools_id,
-            values: [],
-            operatorName: this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator"))
-          });
-          this.source.array.forEach(obs => {
-            observables[newObs.__rx_observable_dev_tools_id].name +=
-              ((observables[newObs.__rx_observable_dev_tools_id].name !== "") ? "-" : "") +
-              observables[obs.__rx_observable_dev_tools_id].name;
-            observables[newObs.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
-            observables[obs.__rx_observable_dev_tools_id].standalone = false;
-          });
-          observables[newObs.__rx_observable_dev_tools_id].name += " " +
-            this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator"));
           return newObs;
         }
-        monkeyPathOperator(operator);
-        // Add all the next observables to it
-        (operator as any).__rx_operator_dev_tools_id =
-          operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
-        if (!observables[this.__rx_observable_dev_tools_id]) {
-          observables[this.__rx_observable_dev_tools_id] = {operators: [], standalone: true};
+        if (!(operator as any).monkeyPatched) {
+          monkeyPathOperator(operator);
         }
-        observables[this.__rx_observable_dev_tools_id].operators.push({
+        const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
+        rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
           values: [],
-          operatorName: operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"))
+          operatorName: operatorName
         });
         (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         const newObs = originalLift.apply(this, [operator]);
@@ -112,7 +85,8 @@ export const monkeyPathLift = function () {
         newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         return newObs;
       } else if (this.array) {
-        // this is probably an array observable. We can take these observables unique ID and assign it to the next one
+        // this is probably an array observable
+        // check if all of the source observables are in debug mode
         let stop = false;
         this.array.forEach(obs => {
           if (!obs.__rx_observable_dev_tools_id) {
@@ -123,35 +97,36 @@ export const monkeyPathLift = function () {
           return originalLift.apply(this, [operator]);
         }
 
-
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the newly lifted observable
         newObs.__rx_observable_dev_tools_id = uuid();
-        monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
-        (operator as any).__rx_operator_dev_tools_id =
-          operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator")) + "-" + uuid();
-        observables[newObs.__rx_observable_dev_tools_id] = {
+        if (!(operator as any).monkeyPathed) {
+          monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
+        }
+
+        const opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        (operator as any).__rx_operator_dev_tools_id = opName + "-" + uuid();
+        const rxDevtoolsObservable = {
           operators: [],
           obsParents: [],
           standalone: true,
           name: ""
         };
-        observables[newObs.__rx_observable_dev_tools_id].operators.push({
+        rxDevtoolsObservable.operators.push({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
           values: [],
-          operatorName: operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"))
+          operatorName: opName
         });
+        let name = "";
         this.array.forEach(obs => {
-          observables[newObs.__rx_observable_dev_tools_id].name +=
-            ((observables[newObs.__rx_observable_dev_tools_id].name !== "") ? "-" : "") +
-            observables[obs.__rx_observable_dev_tools_id].name;
-          observables[newObs.__rx_observable_dev_tools_id].obsParents.push(obs.__rx_observable_dev_tools_id);
-          observables[obs.__rx_observable_dev_tools_id].standalone = false;
+          const parentRxDevtoolsObservable = rxDevtoolsObservables[obs.__rx_observable_dev_tools_id];
+          name += ((name !== "") ? "-" : "") + parentRxDevtoolsObservable.name;
+          rxDevtoolsObservable.obsParents.push(obs.__rx_observable_dev_tools_id);
+          parentRxDevtoolsObservable.standalone = false;
         });
-        observables[newObs.__rx_observable_dev_tools_id].name += " " +
-          operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
-        console.log("adding here", observables[newObs.__rx_observable_dev_tools_id].name);
-        console.log("this", this);
+        name += " " + operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        rxDevtoolsObservable.name = name;
+        rxDevtoolsObservables[newObs.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
         return newObs;
       }
       return originalLift.apply(this, [operator]);
@@ -164,7 +139,7 @@ export const monkeyPathNext = function () {
   Subscriber.prototype.next = function (args) {
     console.log("args", args);
     if (this.__rx_observable_dev_tools_id) {
-      const foundOperator = observables[this.__rx_observable_dev_tools_id].operators.find(operator => {
+      const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
       });
       if (foundOperator) {
