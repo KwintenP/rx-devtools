@@ -10,8 +10,10 @@ import "rxjs/add/observable/of";
 import "rxjs/add/observable/combineLatest";
 import "rxjs/add/operator/combineLatest";
 import "rxjs/add/operator/merge";
+import "rxjs/add/operator/concat";
 import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/share";
 import "rxjs/add/operator/filter";
 import "../add/operator/debug";
 import {createASCII, observables, RxDevtoolsObservable} from "../index";
@@ -28,15 +30,14 @@ export class AppComponent {
   valueSelected;
 
   constructor(private http: Http) {
-    const obs$ = Observable.of(1, 2, 3, 4)
-      .debug("first")
-      .merge(Observable.interval(1000).debug("second").map(val => val + 1).take(2).do(console.log))
-      .map(([val, val2]) => val * val2)
-      .filter((val) => val % 2 === 0)
-      .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
-      .map(res => res.json())
-      .filter(_ => true)
-      .map(val => val.name);
+    const obs$ = Observable.interval(500).debug("second").map(val => val + 1).take(2).do(console.log);
+    // .concat(Observable.of(1, 2, 3, 4).debug("first"))
+    // //  .map(([val, val2]) => val * val2)
+    // .filter((val) => val % 2 === 0)
+    // .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
+    // .map(res => res.json())
+    // .filter(_ => true)
+    // .map(val => val.name);
 
     // const obs$ = Observable.combineLatest(Observable.of(1, 2, 3, 4).debug(), Observable.interval(1000).skip(1).debug().take(5),
     //   (val: number, interval: number) => val * interval)
@@ -46,6 +47,12 @@ export class AppComponent {
     //   .map(val => val.name);
 
     obs$.subscribe(_ => console.log(observables));
+    setTimeout(
+      () => {
+        obs$.subscribe(_ => console.log(observables));
+      },
+      1000
+    );
   }
 
   public createASCIIInComponent() {

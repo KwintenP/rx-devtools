@@ -24,8 +24,8 @@ export const monkeyPathLift = function () {
   Observable.prototype.lift = function (operator) {
     // Check if the operator is a debug operator, if so we will:
     // - monkeyPatch the operator to be able to get the values from it
-    // - generate an id for the operator
-    // - generate an id for the observable
+    // - generate an id for the operator and attach it
+    // - generate an id for the observable and attach it
     // -
     if (operator instanceof DebugOperator) {
       monkeyPathOperator(operator);
@@ -68,7 +68,7 @@ export const monkeyPathLift = function () {
 
           const newObs = originalLift.apply(this);
           // Assign the observable dev tools id to the newly lifted observable
-          newObs.__rx_observable_dev_tools_id = uuid();
+          newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
           monkeyPathOperator(this.operator, newObs.__rx_observable_dev_tools_id);
           (this.operator as any).__rx_operator_dev_tools_id =
             this.operator.constructor.name.substring(0, this.operator.constructor.name.indexOf("Operator")) + "-" + uuid();
