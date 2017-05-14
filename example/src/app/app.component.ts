@@ -30,10 +30,9 @@ export class AppComponent {
   valueSelected;
 
   constructor(private http: Http) {
-    const obs$ = Observable.interval(500).debug("second").map(val => val + 1).take(2).do(console.log)
-      .share()
-      .concat(Observable.of(1, 2, 3, 4).debug("first"))
-      //  .map(([val, val2]) => val * val2)
+    const obs$ = Observable.interval(500).debug("first").map(val => val + 1).take(2).do(console.log)
+      .combineLatest(Observable.of(1, 2, 3, 4).debug("second"))
+      .map(([val, val2]) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
@@ -48,12 +47,6 @@ export class AppComponent {
     //   .map(val => val.name);
 
     obs$.subscribe(_ => console.log(rxDevtoolsObservables));
-    setTimeout(
-      () => {
-        obs$.subscribe(_ => console.log(rxDevtoolsObservables));
-      },
-      200
-    );
   }
 
   public createASCIIInComponent() {
