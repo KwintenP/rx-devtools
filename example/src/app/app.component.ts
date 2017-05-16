@@ -31,14 +31,26 @@ export class AppComponent {
   valueSelected;
 
   constructor(private http: Http) {
+    // const obs$ = Observable.interval(500).debug("first").map(val => val + 1).take(2).do(console.log)
+    //   .merge(Observable.of(1, 2, 3, 4).debug("second"))
+    //   .map(([val, val2]) => val * val2)
+    //   .filter((val) => val % 2 === 0)
+    //   .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
+    //   .map(res => res.json())
+    //   .filter(_ => true)
+    //   .map(val => val.name);
+
     const obs$ = Observable.interval(500).debug("first").map(val => val + 1).take(2).do(console.log)
-      .combineLatest(Observable.of(1, 2, 3, 4).debug("second"))
-      .map(([val, val2]) => val * val2)
+      .concat(Observable.of(1, 2, 3, 4).debug("second"))
+      .startWith(4)
+      // .map(([val, val2]) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
       .map(res => res.json())
       .filter(_ => true)
       .map(val => val.name);
+
+    // const obs$ = Observable.interval(100).debug("first").startWith(0);
 
     // const obs$ = Observable.combineLatest(Observable.of(1, 2, 3, 4).debug(), Observable.interval(1000).skip(1).debug().take(5),
     //   (val: number, interval: number) => val * interval)

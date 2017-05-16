@@ -45,14 +45,20 @@ export const monkeyPathLift = function () {
         operatorName: "debug",
       });
       rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
+      console.log("did", newObs.__rx_observable_dev_tools_id);
       return newObs;
     } else {
+      console.log("operator", operator);
+      console.log("did", this.__rx_observable_dev_tools_id);
       // if it's an observable we want to debug
       if (this.__rx_observable_dev_tools_id) {
         // if it doesn't have en operator, we are probably dealing with an
         // array observable. In this case we just need to re-assign the
         // observable identifier to the new one
+        console.log("operator", operator);
         if (!operator) {
+          console.log("entered without operator part");
+          debugger;
           // check to see if all of the sources are observables we are
           // debugging
           let stop = false;
@@ -137,7 +143,6 @@ export const monkeyPathLift = function () {
 export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
-    console.log("args", args);
     if (this.__rx_observable_dev_tools_id) {
       const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
         return operator.operatorId === this.__rx_operator_dev_tools_id;
