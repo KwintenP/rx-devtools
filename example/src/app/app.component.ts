@@ -42,7 +42,7 @@ export class AppComponent {
 
     const obs$ = Observable.interval(500).debug("first").map(val => val + 1).take(2).do(console.log)
       .concat(Observable.of(1, 2, 3, 4).debug("second"))
-      .startWith(4)
+       .startWith(4)
       // .map(([val, val2]) => val * val2)
       .filter((val) => val % 2 === 0)
       .mergeMap(val => http.get("http://swapi.co/api/people/" + val))

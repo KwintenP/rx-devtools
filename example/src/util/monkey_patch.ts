@@ -57,8 +57,6 @@ export const monkeyPathLift = function () {
         // observable identifier to the new one
         console.log("operator", operator);
         if (!operator) {
-          console.log("entered without operator part");
-          debugger;
           // check to see if all of the sources are observables we are
           // debugging
           let stop = false;
@@ -94,18 +92,41 @@ export const monkeyPathLift = function () {
         // this is probably an array observable
         // check if all of the source observables are in debug mode
         let stop = false;
+        let singleObservableDevtoolsId;
         this.array.forEach(obs => {
+          console.log("entered");
+          console.log(obs.__rx_observable_dev_tools_id);
           if (!obs.__rx_observable_dev_tools_id) {
             stop = true;
+          } else if (obs.__rx_observable_dev_tools_id) {
+            console.log("obs.__rx_observable_dev_tools_id");
+            singleObservableDevtoolsId = obs.__rx_observable_dev_tools_id;
           }
         });
-        if (stop) {
+
+        if (stop && !singleObservableDevtoolsId) {
           return originalLift.apply(this, [operator]);
         }
-
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the newly lifted observable
-        newObs.__rx_observable_dev_tools_id = uuid();
+        if (stop && singleObservableDevtoolsId) {
+          const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+          (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
+          console.log("operators", rxDevtoolsObservables);
+          console.log("thi", singleObservableDevtoolsId);
+          console.log("mq", rxDevtoolsObservables);
+          rxDevtoolsObservables[singleObservableDevtoolsId].operators.push({
+            operatorId: (operator as any).__rx_operator_dev_tools_id,
+            values: [],
+            operatorName: operatorName
+          });
+          (operator as any).__rx_observable_dev_tools_id = singleObservableDevtoolsId;
+          // Assign the observable dev tools id to the next observable as well
+          newObs.__rx_observable_dev_tools_id = singleObservableDevtoolsId;
+          return newObs;
+        } else {
+          newObs.__rx_observable_dev_tools_id = uuid();
+        }
         if (!(operator as any).monkeyPathed) {
           monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
         }
