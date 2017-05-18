@@ -89,6 +89,9 @@ export const monkeyPathLift = function () {
         newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         return newObs;
       } else if (this.array) {
+        if (!(operator as any).monkeyPatched) {
+          monkeyPathOperator(operator);
+        }
         // this is probably an array observable
         // check if all of the source observables are in debug mode
         let stop = false;
