@@ -24,7 +24,7 @@
     "rxjs": "^5.1.0",
     "uuid": "3.0.1",
     "zone.js": "^0.8.4",
-    "rx-devtools": "../rx-devtools/src"
+    "rx-devtools": "../src"
   },
   "devDependencies": {
     "@angular/cli": "1.0.0",

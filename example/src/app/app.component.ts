@@ -16,7 +16,7 @@ import "rxjs/add/observable/interval";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/filter";
-import "../add/operator/debug";
+import "rx-devtools/src/add/operator/debug";
 import {createASCII, rxDevtoolsObservables, RxDevtoolsObservable} from "../index";
 
 @Component({
