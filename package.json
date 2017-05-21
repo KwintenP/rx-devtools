@@ -1,5 +1,5 @@
 {
-  "name": "combine-reducers-enhanced",
+  "name": "rx-devtools",
   "version": "0.0.4",
   "description": "Extension on the combineReducers method as available in Redux libraries",
   "license": "MIT",
