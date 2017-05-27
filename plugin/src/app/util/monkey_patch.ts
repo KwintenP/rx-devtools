@@ -1,8 +1,8 @@
 import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
-import {DebugOperator} from "../operator/debug";
 import uuid from "uuid/v4";
 import {percentage, RxDevtoolsObservable, rxDevtoolsObservables} from "../index";
+import {DebugOperator} from "rx-devtools/operator/debug";
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.monkeyPatched = true;
   const originalOperatorCall = operator.call;

@@ -10,7 +10,6 @@ import { MarbleComponent } from './components/marble/marble.component';
 import { MarbleLineComponent } from './components/marble-line/marble-line.component';
 import { MarbleDiagramComponent } from './components/marble-diagram/marble-diagram.component';
 import { OperatorComponent } from './components/operator/operator.component';
-import {TooltipModule} from "ngx-tooltip";
 import { PrettyPrintJsonPipe } from './pretty-print-json.pipe';
 
 @NgModule({
@@ -27,8 +26,7 @@ import { PrettyPrintJsonPipe } from './pretty-print-json.pipe';
     BrowserModule,
     FormsModule,
     HttpModule,
-    CommonModule,
-    TooltipModule
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,6 +6,6 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "outDir": "release",
-    "allowJs": true
+    "types": ["core-js"]
   }
 }

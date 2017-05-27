@@ -1,4 +1,4 @@
-import {monkeyPathLift, monkeyPathNext} from "./util/monkey_patch";
+import {monkeyPathLift, monkeyPathNext} from "app/util/monkey_patch";
 
 import "./add/operator/debug";
 import "./operator/debug";

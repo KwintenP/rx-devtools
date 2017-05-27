@@ -20,11 +20,12 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "@types/core-js": "0.9.41",
     "core-js": "^2.4.1",
+    "rx-devtools": "0.0.1-alpha.5",
     "rxjs": "^5.1.0",
     "uuid": "3.0.1",
-    "zone.js": "^0.8.4",
-    "rx-devtools": "../src"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.0.0",

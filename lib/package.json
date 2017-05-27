@@ -1,9 +1,9 @@
 {
   "name": "rx-devtools",
-  "version": "0.0.4",
-  "description": "Extension on the combineReducers method as available in Redux libraries",
+  "version": "0.0.1-alpha.5",
+  "description": "Lib needed to be able to use the rx-devtools chrome plugin for RxJS debugging",
   "license": "MIT",
-  "repository": "kwintenp/combine-reducers-enhanced",
+  "repository": "kwintenp/rx-devtools",
   "author": {
     "name": "KwintenP",
     "email": "kwinten.pisman@gmail.com",
@@ -17,7 +17,7 @@
     "clean": "rimraf release",
     "copy": "cpy LICENSE package.json README.md release",
     "build": "tsc -p tsconfig.json",
-    "deploy": "npm run build && cd ./release && npm publish"
+    "deploy": "npm run build && npm publish ./release"
   },
   "main": "index.js",
   "types": "index.d.ts",
@@ -25,13 +25,15 @@
     ""
   ],
   "dependencies": {
-    "tslint": "5.1.0",
+    "@types/core-js": "0.9.36",
+    "rxjs": "5.4.0",
     "uuid": "3.0.1"
   },
   "devDependencies": {
     "ava": "^0.17.0",
     "cpy-cli": "1.0.1",
     "nyc": "^10.0.0",
+    "tslint": "5.1.0",
     "typescript": "2.2.2",
     "xo": "^0.17.0"
   }
