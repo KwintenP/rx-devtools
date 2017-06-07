@@ -1,8 +1,8 @@
 import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
 import uuid from "uuid/v4";
-import {percentage, RxDevtoolsObservable, rxDevtoolsObservables} from "../index";
-import {DebugOperator} from "rx-devtools/operator/debug";
+import {DebugOperator} from './operator/debug';
+import {RxDevtoolsObservable} from '../common/rx-devtools-observable.entity';
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.monkeyPatched = true;
   const originalOperatorCall = operator.call;
@@ -44,8 +44,9 @@ export const monkeyPathLift = function () {
         values: [],
         operatorName: "debug",
       });
-      rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
-      console.log("did", newObs.__rx_observable_dev_tools_id);
+      console.log('send');
+      console.log(rxDevtoolsObservable);
+      // rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
       return newObs;
     } else {
       console.log("operator", operator);
@@ -78,11 +79,17 @@ export const monkeyPathLift = function () {
         }
         const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
-        rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.push({
+        console.log('send event');
+        console.log({
           operatorId: (operator as any).__rx_operator_dev_tools_id,
           values: [],
           operatorName: operatorName
         });
+        // rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.push({
+        //   operatorId: (operator as any).__rx_operator_dev_tools_id,
+        //   values: [],
+        //   operatorName: operatorName
+        // });
         (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the next observable as well
@@ -115,14 +122,17 @@ export const monkeyPathLift = function () {
         if (stop && singleObservableDevtoolsId) {
           const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
           (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
-          console.log("operators", rxDevtoolsObservables);
-          console.log("thi", singleObservableDevtoolsId);
-          console.log("mq", rxDevtoolsObservables);
-          rxDevtoolsObservables[singleObservableDevtoolsId].operators.push({
+          console.log('send event');
+          console.log({
             operatorId: (operator as any).__rx_operator_dev_tools_id,
             values: [],
             operatorName: operatorName
           });
+          // rxDevtoolsObservables[singleObservableDevtoolsId].operators.push({
+          //   operatorId: (operator as any).__rx_operator_dev_tools_id,
+          //   values: [],
+          //   operatorName: operatorName
+          // });
           (operator as any).__rx_observable_dev_tools_id = singleObservableDevtoolsId;
           // Assign the observable dev tools id to the next observable as well
           newObs.__rx_observable_dev_tools_id = singleObservableDevtoolsId;
@@ -149,14 +159,16 @@ export const monkeyPathLift = function () {
         });
         let name = "";
         this.array.forEach(obs => {
-          const parentRxDevtoolsObservable = rxDevtoolsObservables[obs.__rx_observable_dev_tools_id];
-          name += ((name !== "") ? "-" : "") + parentRxDevtoolsObservable.name;
-          rxDevtoolsObservable.obsParents.push(obs.__rx_observable_dev_tools_id);
-          parentRxDevtoolsObservable.standalone = false;
+          console.log('send event for parent');
+          // const parentRxDevtoolsObservable = rxDevtoolsObservables[obs.__rx_observable_dev_tools_id];
+          // name += ((name !== "") ? "-" : "") + parentRxDevtoolsObservable.name;
+          // rxDevtoolsObservable.obsParents.push(obs.__rx_observable_dev_tools_id);
+          // parentRxDevtoolsObservable.standalone = false;
         });
         name += " " + operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         rxDevtoolsObservable.name = name;
-        rxDevtoolsObservables[newObs.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
+        console.log('send event');
+        // rxDevtoolsObservables[newObs.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
         return newObs;
       }
       return originalLift.apply(this, [operator]);
@@ -168,13 +180,14 @@ export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
-      const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
-        return operator.operatorId === this.__rx_operator_dev_tools_id;
-      });
-      if (foundOperator) {
-        foundOperator.values.push({percentage, value: args});
-      }
-    }
+      console.log('send event');
+      // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
+    //     return operator.operatorId === this.__rx_operator_dev_tools_id;
+    //   });
+    //   if (foundOperator) {
+    //     foundOperator.values.push({percentage, value: args});
+    //   }
+    // }
     return next.call(this, args);
   };
 };
