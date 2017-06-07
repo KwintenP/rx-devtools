@@ -1,20 +1,23 @@
 {
+  "version": "1.6.2",
   "compileOnSave": false,
+  "buildOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
-    "sourceMap": true,
+    "target": "es5",
+    "module": "commonjs",
     "declaration": false,
-    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2016",
-      "dom"
-    ]
-  }
+    "sourceMap": true,
+    "listFiles": false
+  },
+  "exclude": [
+    "node_modules",
+    "example-apps",
+    "build",
+    "typings"
+  ]
 }
