@@ -19,5 +19,5 @@ const injectScript = (path: string) => {
   scriptInjection.add(path);
 };
 
-injectScript('build/monkey-path.js');
+injectScript('build/rx-devtools.js');
 

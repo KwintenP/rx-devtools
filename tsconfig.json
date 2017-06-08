@@ -16,5 +16,11 @@
       "es2016",
       "dom"
     ]
-  }
+  },
+  "exclude": [
+    "plugin",
+    "lib",
+    "extension",
+    "build"
+  ]
 }

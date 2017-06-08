@@ -1,6 +1,6 @@
-import {Observable} from "rxjs/Observable";
-import {Subscriber} from "rxjs/Subscriber";
-import uuid from "uuid/v4";
+import {Observable} from 'rxjs/Observable';
+import {Subscriber} from 'rxjs/Subscriber';
+import uuid from 'uuid/v4';
 import {DebugOperator} from './operator/debug';
 import {RxDevtoolsObservable} from '../common/rx-devtools-observable.entity';
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
@@ -182,13 +182,15 @@ export const monkeyPathNext = function () {
     if (this.__rx_observable_dev_tools_id) {
       console.log('send event');
       // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
-    //     return operator.operatorId === this.__rx_operator_dev_tools_id;
-    //   });
-    //   if (foundOperator) {
-    //     foundOperator.values.push({percentage, value: args});
-    //   }
-    // }
-    return next.call(this, args);
+      //     return operator.operatorId === this.__rx_operator_dev_tools_id;
+      //   });
+      //   if (foundOperator) {
+      //     foundOperator.values.push({percentage, value: args});
+      //   }
+      // }
+      return next.call(this, args);
+    }
+    ;
   };
-};
+}
 
