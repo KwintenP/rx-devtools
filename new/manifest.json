@@ -1,0 +1,23 @@
+{
+  "name": "RxJS developer tools",
+  "short_name": "Augury",
+  "version": "1.10.0",
+  "description": "Extends the Developer Tools, adding tools for debugging and profiling Angular applications.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [{
+    "matches": [
+      "<all_urls>"
+    ],
+    "js": [
+      "dist/content-script.bundle.js"
+    ],
+    "run_at": "document_end"
+  }],
+  "web_accessible_resources": [
+    "node_modules/*",
+    "build/*"
+  ],
+  "manifest_version": 2
+}
