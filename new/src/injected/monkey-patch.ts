@@ -178,7 +178,9 @@ export const monkeyPathLift = function () {
 
 export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
+  console.log('hurray for all these next events');
   Subscriber.prototype.next = function (args) {
+    console.log('hurray for all these next events', args);
     if (this.__rx_observable_dev_tools_id) {
       console.log('send event');
       // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
@@ -193,6 +195,11 @@ export const monkeyPathNext = function () {
     ;
   };
 }
+
+
+
+monkeyPathLift();
+monkeyPathNext();
 
 console.log('injected properly');
 
