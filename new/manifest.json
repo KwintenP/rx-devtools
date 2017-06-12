@@ -17,7 +17,7 @@
   }],
   "web_accessible_resources": [
     "node_modules/*",
-    "build/*"
+    "dist/*"
   ],
   "manifest_version": 2
 }

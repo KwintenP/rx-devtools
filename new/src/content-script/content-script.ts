@@ -19,7 +19,7 @@ const injectScript = (path: string) => {
   scriptInjection.add(path);
 };
 
-injectScript('build/rx-devtools.js');
+injectScript('dist/rx-devtools.bundle.js');
 
 
 // console.log('tada');

@@ -9,7 +9,7 @@ module.exports = {
 
   entry: {
     'content-script': './content-script/content-script.ts',
-    'rx-devtools': ['./src/injected/monkey-patch'],
+    'rx-devtools': ['./injected/monkey-patch'],
   },
 
   output: {

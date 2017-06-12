@@ -194,3 +194,5 @@ export const monkeyPathNext = function () {
   };
 }
 
+console.log('injected properly');
+
