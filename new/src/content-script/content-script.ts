@@ -20,6 +20,3 @@ const injectScript = (path: string) => {
 };
 
 injectScript('dist/rx-devtools.bundle.js');
-
-
-// console.log('tada');
