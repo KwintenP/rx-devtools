@@ -3,6 +3,10 @@ import {Operator} from "rxjs/Operator";
 import {Subscriber} from "rxjs/Subscriber";
 import uuid from "uuid";
 
+export interface DebugSignature<T> {
+  (name?: string): Observable<T>;
+}
+
 export function debug(name?: string): Observable<any> {
   // Assign an id to the current observable being lifted. This way we can identify
   // which observable should be debugged.
