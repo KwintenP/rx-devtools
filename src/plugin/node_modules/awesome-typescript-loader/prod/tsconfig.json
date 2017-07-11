@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "outDir": "../dist",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "skipDefaultLibCheck": true,
+        "sourceMap": true,
+        "declaration": true,
+        "removeComments": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "lib": [ "es6", "dom" ]
+    },
+    "files": [
+        "../node_modules/typescript/lib/typescriptServices.d.ts"
+    ],
+    "compileOnSave": false,
+    "include": [
+        "../src/**/*"
+    ],
+    "exclude": [
+        "../src/test"
+    ]
+}
