@@ -2,9 +2,8 @@ import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
 import uuid from 'uuid/v4';
 import {DebugOperator} from './operator/debug';
-import {RxDevtoolsObservable} from '../common/rx-devtools-observable.entity';
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
-  operator.monkeyPatched = true;
+  operator.isMonkeyPatched = true;
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
     (subscriber as any).__rx_operator_dev_tools_id = this.__rx_operator_dev_tools_id;
@@ -24,7 +23,7 @@ export const monkeyPathLift = function () {
     // - monkeyPatch the operator to be able to get the values from it
     // - generate an id for the operator and attach it
     // - generate an id for the observable and attach it
-    // - add a new rxDevToolsObservable entry
+    // - send a message to the plugin so the values can be visualised
     if (operator instanceof DebugOperator) {
       if (!(operator as any).monkeyPatched) {
         monkeyPathOperator(operator);
@@ -37,8 +36,8 @@ export const monkeyPathLift = function () {
       // next event to the correct operator
       (operator as any).__rx_operator_dev_tools_id = "debug-" + uuid();
       (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
-      // Add it to the rxDevtoolsObservables object
-      const rxDevtoolsObservable: RxDevtoolsObservable = {operators: [], standalone: true, name: operator.name};
+      // send it to the content script using the injected script
+      const rxDevtoolsObservable = {operators: [], standalone: true, name: operator.name};
       rxDevtoolsObservable.operators.push({
         operatorId: (operator as any).__rx_operator_dev_tools_id,
         values: [],
@@ -74,7 +73,7 @@ export const monkeyPathLift = function () {
           newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
           return newObs;
         }
-        if (!(operator as any).monkeyPatched) {
+        if (!(operator as any).isMonkeyPatched) {
           monkeyPathOperator(operator);
         }
         const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
@@ -96,7 +95,7 @@ export const monkeyPathLift = function () {
         newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         return newObs;
       } else if (this.array) {
-        if (!(operator as any).monkeyPatched) {
+        if (!(operator as any).isMonkeyPatched) {
           monkeyPathOperator(operator);
         }
         // this is probably an array observable
@@ -140,7 +139,7 @@ export const monkeyPathLift = function () {
         } else {
           newObs.__rx_observable_dev_tools_id = uuid();
         }
-        if (!(operator as any).monkeyPathed) {
+        if (!(operator as any).isMonkeyPatched) {
           monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
         }
 
@@ -194,3 +193,9 @@ export const monkeyPathNext = function () {
   };
 }
 
+export const setupRxDevtools = () => {
+  monkeyPathNext();
+  monkeyPathLift();
+}
+
+(window as any).sendMessage('tada');
