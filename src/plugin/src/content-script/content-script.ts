@@ -1,4 +1,4 @@
-const scriptInjection = new Set<string>();
+let scriptInjection = new Set<string>();
 
 const inject = (fn: (element: HTMLScriptElement) => void) => {
   const script = document.createElement('script');

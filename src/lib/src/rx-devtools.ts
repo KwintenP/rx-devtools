@@ -187,9 +187,10 @@ export const monkeyPathNext = function () {
       //     foundOperator.values.push({percentage, value: args});
       //   }
       // }
+      (window as any).sendMessage('message from the library');
       return next.call(this, args);
     }
-    ;
+    return next.call(this, args);
   };
 }
 
