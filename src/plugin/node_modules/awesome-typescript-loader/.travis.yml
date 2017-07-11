@@ -1,0 +1,7 @@
+sudo: false
+language: node_js
+before_script:
+  - npm i
+  - npm run compile
+node_js:
+  - "7"
