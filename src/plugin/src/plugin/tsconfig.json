@@ -1,0 +1,23 @@
+{
+  "version": "1.6.2",
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "listFiles": false
+  },
+  "exclude": [
+    "node_modules",
+    "example-apps",
+    "build",
+    "typings"
+  ]
+}
