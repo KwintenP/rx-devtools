@@ -1,4 +1,5 @@
 window.sendMessage = function (text) {
+    console.log('posting', text);
     window.postMessage(text, '*');
 };
 window.sendMessage('test');
