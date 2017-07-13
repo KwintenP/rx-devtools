@@ -1,59 +1,60 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const ROOT = path.resolve( __dirname, 'src' );
-const DESTINATION = path.resolve( __dirname, 'dist' );
+const ROOT = path.resolve(__dirname, 'src');
+const DESTINATION = path.resolve(__dirname, 'dist');
 
 module.exports = {
-    context: ROOT,
+  context: ROOT,
 
-    entry: {
-        'content-script': './content-script/content-script.ts',
-        'rx-devtools': './injected/rx-devtools.ts'
-    },
+  entry: {
+    'content-script': './content-script/content-script.ts',
+    'rx-devtools': './injected/rx-devtools.ts',
+    'devtools': './devtools/devtools.ts'
+  },
 
-    output: {
-        filename: '[name].bundle.js',
-        path: DESTINATION
-    },
+  output: {
+    filename: '[name].bundle.js',
+    path: DESTINATION
+  },
 
-    resolve: {
-        extensions: ['.ts', '.js'],
-        modules: [
-            ROOT,
-            'node_modules'
-        ]
-    },
+  resolve: {
+    extensions: ['.ts', '.js'],
+    modules: [
+      ROOT,
+      'node_modules'
+    ]
+  },
 
-    module: {
-        rules: [
-            /****************
-            * PRE-LOADERS
-            *****************/
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                use: 'source-map-loader'
-            },
-            {
-                enforce: 'pre',
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: 'tslint-loader'
-            },
+  module: {
+    rules: [
+      /****************
+       * PRE-LOADERS
+       *****************/
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        use: 'source-map-loader'
+      },
+      {
+        enforce: 'pre',
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: 'tslint-loader'
+      },
 
-            /****************
-            * LOADERS
-            *****************/
-            {
-                test: /\.ts$/,
-                exclude: [ /node_modules/ ],
-                use: 'awesome-typescript-loader'
-            }
-        ]
-    },
+      /****************
+       * LOADERS
+       *****************/
+      {
+        test: /\.ts$/,
+        exclude: [/node_modules/],
+        use: 'awesome-typescript-loader'
+      }
+    ]
+  },
 
-    devtool: 'cheap-module-source-map',
-    devServer: {}
+  devtool: 'cheap-module-source-map',
+  devServer: {}
 };
 

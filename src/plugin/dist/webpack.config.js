@@ -6,7 +6,8 @@ module.exports = {
     context: ROOT,
     entry: {
         'content-script': './content-script/content-script.ts',
-        'rx-devtools': './injected/rx-devtools.ts'
+        'rx-devtools': './injected/rx-devtools.ts',
+        'devtools': './devtools/devtools.ts'
     },
     output: {
         filename: '[name].bundle.js',
@@ -22,8 +23,8 @@ module.exports = {
     module: {
         rules: [
             /****************
-            * PRE-LOADERS
-            *****************/
+             * PRE-LOADERS
+             *****************/
             {
                 enforce: 'pre',
                 test: /\.js$/,
@@ -36,8 +37,8 @@ module.exports = {
                 use: 'tslint-loader'
             },
             /****************
-            * LOADERS
-            *****************/
+             * LOADERS
+             *****************/
             {
                 test: /\.ts$/,
                 exclude: [/node_modules/],
