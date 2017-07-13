@@ -6,6 +6,7 @@
   "permissions": [
     "storage"
   ],
+  "devtools_page": "./src/devtools-page/dist/index.html",
   "content_scripts": [{
     "matches": [
       "<all_urls>"
