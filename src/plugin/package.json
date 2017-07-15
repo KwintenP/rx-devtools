@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --port 9000 --inline --progress --profile --colors --watch --content-base src/",
-    "build": "webpack --config webpack.config.js",
+    "prebuild": "shx rm -rf ./devtools-page-dist/",
+    "build": "webpack --config webpack.config.js && shx cp -r ../../devtools-page/dist/* ./devtools-page-dist/",
     "build.prod": "webpack --config webpack.config.js -p",
     "test": "karma start karma.config.js"
   },
@@ -26,6 +27,7 @@
     "karma-jasmine": "1.1.0",
     "karma-phantomjs-launcher": "1.0.2",
     "karma-webpack": "2.0.1",
+    "shx": "0.2.2",
     "source-map-loader": "0.1.6",
     "tslint": "4.3.1",
     "tslint-loader": "3.3.0",
