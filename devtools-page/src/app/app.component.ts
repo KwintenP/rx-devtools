@@ -14,6 +14,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/filter';
+import {RxDevtoolsObservable} from './entities/rx-devtools-observable.entity';
 declare const chrome;
 
 @Component({
@@ -23,21 +24,15 @@ declare const chrome;
 })
 export class AppComponent implements OnInit {
   title = 'app works!';
-  bp;
+
+  rxDevtoolsObservableData: RxDevtoolsObservable;
 
   constructor(private zone: NgZone) {
   }
 
   ngOnInit() {
     var backgroundPageConnection = chrome.runtime.connect();
-    this.bp = backgroundPageConnection;
-    console.log('bp', this.bp);
-    console.log('connection made', backgroundPageConnection);
 
-    let callback = (message, sender, sendResponse) => {
-      this.title = 'message received mothafucker';
-      console.log('message received', message, sender, sendResponse);
-    };
     backgroundPageConnection.onMessage.addListener(this.runInZone.bind(this));
 
     backgroundPageConnection.postMessage({
@@ -51,7 +46,9 @@ export class AppComponent implements OnInit {
   }
 
   private processMesage(message, sender, sendResponse) {
-    this.title = 'message received mothafucker';
-    console.log('message received', message, sender, sendResponse);
+    switch(message.name) {
+      case 'ADD_OBSERVABLE':
+        this.rxDevtoolsObservableData[message.value.id] = message.value.data;
+    }
   };
 }
