@@ -4,7 +4,7 @@ import { Subscriber } from "rxjs/Subscriber";
 export interface DebugSignature<T> {
     (name?: string): Observable<T>;
 }
-export declare function debug(name?: string): Observable<any>;
+export declare function debug<T>(observable: Observable<T>, name: string): Observable<T>;
 export declare class DebugOperator<T, R> implements Operator<T, R> {
     name: string;
     constructor(name?: string);

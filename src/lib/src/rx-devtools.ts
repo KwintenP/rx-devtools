@@ -43,8 +43,7 @@ export const monkeyPathLift = function () {
         values: [],
         operatorName: "debug",
       });
-      console.log('send');
-      console.log(rxDevtoolsObservable);
+      sendMessage({name: 'ADD_OBSERVABLE', value: {id: this.__rx_observable_dev_tools_id, data: rxDevtoolsObservable}});
       // rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
       return newObs;
     } else {
@@ -203,5 +202,3 @@ const sendMessage = (message: any) => {
     source: 'rx-devtools-plugin'
   }, '*');
 };
-
-sendMessage('tada');

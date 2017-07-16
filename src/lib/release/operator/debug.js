@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Subscriber_1 = require("rxjs/Subscriber");
 var uuid_1 = require("uuid");
-function debug(name) {
+function debug(observable, name) {
     // Assign an id to the current observable being lifted. This way we can identify
     // which observable should be debugged.
     this.__rx_observable_dev_tools_id = uuid_1.default();
