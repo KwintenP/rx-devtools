@@ -24,13 +24,15 @@ declare const chrome;
 })
 export class AppComponent {
   title = 'app works!';
+  bp;
 
   constructor(private http: Http) {
     var backgroundPageConnection = chrome.runtime.connect();
-
+    this.bp = backgroundPageConnection;
     console.log('connection made', backgroundPageConnection);
 
     let callback = (message, sender, sendResponse) => {
+      this.title = 'message received mothafucker';
       console.log('message received', message, sender, sendResponse);
     };
     backgroundPageConnection.onMessage.addListener(callback as any);

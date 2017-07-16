@@ -28,6 +28,7 @@ chrome.runtime.onConnect.addListener(function (port) {
         break;
       }
     }
+    console.log('disconnect', connections);
   });
 });
 console.log('request done');
@@ -40,6 +41,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (sender.tab) {
     var tabId = sender.tab.id;
     if (tabId in connections) {
+      console.log('sending it to tab with id', tabId, 'with message', request);
       connections[tabId].postMessage(request);
     } else {
       console.log("Tab not found in connection list.");
