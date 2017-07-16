@@ -19,11 +19,11 @@ const injectScript = (path: string) => {
   scriptInjection.add(path);
 };
 
-injectScript('dist/rx-devtools.bundle.js');
+injectScript('rx-devtools.bundle.js');
 
 window.addEventListener('message',
   (event: MessageEvent) => {
     if (event.source === window) {
       console.log('event', event);
     }
-  });
+});

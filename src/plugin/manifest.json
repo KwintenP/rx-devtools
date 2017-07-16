@@ -6,19 +6,21 @@
   "permissions": [
     "storage"
   ],
-  "devtools_page": "index.html",
+  "devtools_page": "devtools.html",
   "content_scripts": [{
     "matches": [
       "<all_urls>"
     ],
     "js": [
-      "dist/content-script.bundle.js"
+      "content-script.bundle.js"
     ],
     "run_at": "document_start"
   }],
   "web_accessible_resources": [
     "node_modules/*",
-    "dist/*"
+    "dist/*",
+    "*"
   ],
-  "manifest_version": 2
+  "manifest_version": 2,
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

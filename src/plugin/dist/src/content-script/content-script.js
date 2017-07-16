@@ -14,7 +14,7 @@ var injectScript = function (path) {
     });
     scriptInjection.add(path);
 };
-injectScript('dist/rx-devtools.bundle.js');
+injectScript('rx-devtools.bundle.js');
 window.addEventListener('message', function (event) {
     if (event.source === window) {
         console.log('event', event);

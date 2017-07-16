@@ -48,8 +48,6 @@ export const monkeyPathLift = function () {
       // rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
       return newObs;
     } else {
-      console.log("operator", operator);
-      console.log("did", this.__rx_observable_dev_tools_id);
       // if it's an observable we want to debug
       if (this.__rx_observable_dev_tools_id) {
         // if it doesn't have en operator, we are probably dealing with an
