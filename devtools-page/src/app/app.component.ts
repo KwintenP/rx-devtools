@@ -26,9 +26,7 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(private http: Http) {
-    var backgroundPageConnection = chrome.runtime.connect({
-      name: 'panel'
-    });
+    var backgroundPageConnection = chrome.runtime.connect();
 
     console.log('connection made', backgroundPageConnection);
 
@@ -36,6 +34,11 @@ export class AppComponent {
       console.log('message received', message, sender, sendResponse);
     };
     backgroundPageConnection.onMessage.addListener(callback as any);
+
+    backgroundPageConnection.postMessage({
+      name: 'rx-devtools-page-init',
+      tabId: chrome.devtools.inspectedWindow.tabId
+    });
 
     // const obs$ = Observable.interval(500).map(val => val + 1).take(2).do(console.log)
     //     .concat(Observable.of(1, 2, 3, 4).debug("second"))
