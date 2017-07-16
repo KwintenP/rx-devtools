@@ -26,6 +26,7 @@ window.addEventListener('message', function (event) {
         !(message.source === 'rx-devtools-plugin')) {
         return;
     }
-    // chrome.runtime.sendMessage(message);
+    console.log('sending', message);
+    chrome.runtime.sendMessage(message);
 });
 //# sourceMappingURL=content-script.js.map

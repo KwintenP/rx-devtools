@@ -7,7 +7,8 @@ module.exports = {
     entry: {
         'content-script': './content-script/content-script.ts',
         'rx-devtools': './injected/rx-devtools.ts',
-        'devtools': './devtools/devtools.ts'
+        'devtools': './devtools/devtools.ts',
+        'background': './background/background.ts'
     },
     output: {
         filename: '[name].bundle.js',

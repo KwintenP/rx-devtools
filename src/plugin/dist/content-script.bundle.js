@@ -63,11 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */
 /***/ (function(module, exports) {
 
 var scriptInjection = new Set();
@@ -88,20 +89,18 @@ var injectScript = function (path) {
 };
 injectScript('rx-devtools.bundle.js');
 window.addEventListener('message', function (event) {
-    console.log('got here');
     // Only accept messages from the same frame
     if (event.source !== window) {
         return;
     }
-    console.log('here as well');
     var message = event.data;
     // Only accept messages that we know are ours
     if (typeof message !== 'object' || message === null ||
         !(message.source === 'rx-devtools-plugin')) {
         return;
     }
-    console.log('even here', event);
-    // chrome.runtime.sendMessage(message);
+    console.log('sending', message);
+    chrome.runtime.sendMessage(message);
 });
 
 

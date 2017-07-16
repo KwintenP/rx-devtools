@@ -34,5 +34,6 @@ window.addEventListener('message', function (event: { source: any, data: { sourc
     return;
   }
 
-  // chrome.runtime.sendMessage(message);
+  console.log('sending', message);
+  chrome.runtime.sendMessage(message);
 });

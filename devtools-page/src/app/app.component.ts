@@ -15,6 +15,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/filter';
+declare const chrome;
 
 @Component({
   selector: 'app-root',
@@ -25,14 +26,16 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(private http: Http) {
-    // const obs$ = Observable.interval(500).debug("first").map(val => val + 1).take(2).do(console.log)
-    //   .merge(Observable.of(1, 2, 3, 4).debug("second"))
-    //   .map(([val, val2]) => val * val2)
-    //   .filter((val) => val % 2 === 0)
-    //   .mergeMap(val => http.get("http://swapi.co/api/people/" + val))
-    //   .map(res => res.json())
-    //   .filter(_ => true)
-    //   .map(val => val.name);
+    var backgroundPageConnection = chrome.runtime.connect({
+      name: 'panel'
+    });
+
+    console.log('connection made', backgroundPageConnection);
+
+    let callback = (message, sender, sendResponse) => {
+      console.log('message received', message, sender, sendResponse);
+    };
+    backgroundPageConnection.onMessage.addListener(callback as any);
 
     // const obs$ = Observable.interval(500).map(val => val + 1).take(2).do(console.log)
     //     .concat(Observable.of(1, 2, 3, 4).debug("second"))
