@@ -21,9 +21,18 @@ const injectScript = (path: string) => {
 
 injectScript('rx-devtools.bundle.js');
 
-window.addEventListener('message',
-  (event: MessageEvent) => {
-    if (event.source === window) {
-      console.log('event', event);
-    }
+window.addEventListener('message', function (event: { source: any, data: { source: string } }) {
+  // Only accept messages from the same frame
+  if (event.source !== window) {
+    return;
+  }
+  var message = event.data;
+
+  // Only accept messages that we know are ours
+  if (typeof message !== 'object' || message === null ||
+    !(message.source === 'rx-devtools-plugin')) {
+    return;
+  }
+
+  // chrome.runtime.sendMessage(message);
 });

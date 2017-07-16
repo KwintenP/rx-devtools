@@ -197,4 +197,11 @@ export const setupRxDevtools = () => {
   monkeyPathLift();
 }
 
-(window as any).sendMessage('tada');
+const sendMessage = (message: any) => {
+  window.postMessage({
+    message,
+    source: 'rx-devtools-plugin'
+  }, '*');
+};
+
+sendMessage('tada');

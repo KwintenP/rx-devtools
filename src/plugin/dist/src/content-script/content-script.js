@@ -16,8 +16,16 @@ var injectScript = function (path) {
 };
 injectScript('rx-devtools.bundle.js');
 window.addEventListener('message', function (event) {
-    if (event.source === window) {
-        console.log('event', event);
+    // Only accept messages from the same frame
+    if (event.source !== window) {
+        return;
     }
+    var message = event.data;
+    // Only accept messages that we know are ours
+    if (typeof message !== 'object' || message === null ||
+        !(message.source === 'rx-devtools-plugin')) {
+        return;
+    }
+    // chrome.runtime.sendMessage(message);
 });
 //# sourceMappingURL=content-script.js.map
