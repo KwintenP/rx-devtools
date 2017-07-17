@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --port 9000 --inline --progress --profile --colors --watch --content-base src/",
-    "prebuild": "shx rm -rf ./dist/",
+    "prebuild": "shx rm -rf ./dist/ && cd ../../devtools-page && npm run build",
     "build": "webpack --config webpack.config.js && shx cp -r ../../devtools-page/dist/* ./dist/ && cp manifest.json ./dist/ && cp devtools.html ./dist/",
     "build.prod": "webpack --config webpack.config.js -p",
     "test": "karma start karma.config.js"

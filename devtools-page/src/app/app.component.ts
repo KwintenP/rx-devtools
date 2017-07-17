@@ -24,6 +24,7 @@ declare const chrome;
 })
 export class AppComponent implements OnInit {
   title = 'app works!';
+  message = 'start';
 
   rxDevtoolsObservableData: RxDevtoolsObservable;
 
@@ -46,9 +47,10 @@ export class AppComponent implements OnInit {
   }
 
   private processMesage(message, sender, sendResponse) {
+    this.zone.run(() => this.message = message);
     switch(message.name) {
       case 'ADD_OBSERVABLE':
-        this.rxDevtoolsObservableData[message.value.id] = message.value.data;
+        this.zone.run(() => this.rxDevtoolsObservableData[message.value.id] = message.value.data);
     }
   };
 }
