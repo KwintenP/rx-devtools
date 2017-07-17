@@ -1,6 +1,7 @@
+declare const require;
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
-import uuid from 'uuid/v4';
+const uuid = require('uuid/v4');
 import {DebugOperator} from './operator/debug';
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.isMonkeyPatched = true;
@@ -34,7 +35,7 @@ export const monkeyPathLift = function () {
       newObs.__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
       // Generate an operator id and assign it to the operator to link the
       // next event to the correct operator
-      (operator as any).__rx_operator_dev_tools_id = "debug-" + uuid();
+      (operator as any).__rx_operator_dev_tools_id = "debug-" + uuid.v4();
       (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
       // send it to the content script using the injected script
       const rxDevtoolsObservable = {operators: [], standalone: true, name: operator.name};
