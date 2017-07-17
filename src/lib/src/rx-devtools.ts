@@ -82,6 +82,11 @@ export const monkeyPathLift = function () {
           values: [],
           operatorName: operatorName
         });
+        sendMessage({name: 'ADD_OPERATOR', value: {id: this.__rx_observable_dev_tools_id, data: {
+          operatorId: (operator as any).__rx_operator_dev_tools_id,
+          values: [],
+          operatorName: operatorName
+        }}});
         // rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.push({
         //   operatorId: (operator as any).__rx_operator_dev_tools_id,
         //   values: [],
@@ -125,6 +130,11 @@ export const monkeyPathLift = function () {
             values: [],
             operatorName: operatorName
           });
+          sendMessage({name: 'ADD_OPERATOR', value: {id: this.__rx_observable_dev_tools_id, data: {
+            operatorId: (operator as any).__rx_operator_dev_tools_id,
+            values: [],
+            operatorName: operatorName
+          }}});
           // rxDevtoolsObservables[singleObservableDevtoolsId].operators.push({
           //   operatorId: (operator as any).__rx_operator_dev_tools_id,
           //   values: [],
@@ -178,6 +188,7 @@ export const monkeyPathNext = function () {
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
       console.log('send event');
+      sendMessage({name: 'NEXT_EVENT', value: {id: this.__rx_observable_dev_tools_id, data: {operatorId: this.__rx_operator_dev_tools_id, value: args}}});
       // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
       //     return operator.operatorId === this.__rx_operator_dev_tools_id;
       //   });

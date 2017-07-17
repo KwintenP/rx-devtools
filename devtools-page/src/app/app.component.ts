@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   title = 'app works!';
   message = 'start';
 
-  rxDevtoolsObservableData: RxDevtoolsObservable;
+  rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable };
 
   constructor(private zone: NgZone) {
   }
@@ -47,10 +47,32 @@ export class AppComponent implements OnInit {
   }
 
   private processMesage(message, sender, sendResponse) {
-    this.zone.run(() => this.message = message);
-    switch(message.name) {
+    this.message = message;
+    const messageContent = message.message;
+    switch (messageContent.name) {
       case 'ADD_OBSERVABLE':
-        this.zone.run(() => this.rxDevtoolsObservableData[message.value.id] = message.value.data);
+        this.rxDevtoolsObservableData[messageContent.value.id] = messageContent.value.data;
+        break;
+      case 'ADD_OPERATOR':
+        this.rxDevtoolsObservableData[messageContent.value.id].operators.push(messageContent.value.data);
+        break;
+      case 'NEXT_EVENT':
+        const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
+          return operator.operatorId === messageContent.value.data.operatorId
+        });
+        if (foundOperator) {
+          foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
+        }
+        break;
     }
-  };
+
+    console.log(this.rxDevtoolsObservableData);
+    // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
+    //     return operator.operatorId === this.__rx_operator_dev_tools_id;
+    //   });
+    //   if (foundOperator) {
+    //     foundOperator.values.push({percentage, value: args});
+    //   }
+    // }
+  }
 }
