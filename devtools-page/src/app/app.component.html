@@ -11,7 +11,7 @@
   </div>
   <div class="sandboxRoot item">
     <div *ngIf="observableSelected">
-      <div *ngIf="observableSelected.value.standalone; else elseBlock">
+      <div *ngIf="observableSelected.value.standalone">
         <div *ngFor="let parentObs of observableSelected.value.obsParents">
           <app-marble-diagram (valueSelected)="this.valueSelected = $event"
                               [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
