@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   title = 'app works!';
   message = 'start';
 
-  rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable };
+  rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
 
   constructor(private zone: NgZone) {
   }
