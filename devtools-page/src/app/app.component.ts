@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/skip';
@@ -25,10 +25,11 @@ declare const chrome;
 export class AppComponent implements OnInit {
   title = 'app works!';
   message = 'start';
+  observableSelected: RxDevtoolsObservable;
 
   rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
 
-  constructor(private zone: NgZone) {
+  constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -44,26 +45,31 @@ export class AppComponent implements OnInit {
 
   private runInZone(message, sender, sendResponse) {
     this.zone.run(() => this.processMesage(message, sender, sendResponse));
+    this.cd.detectChanges();
   }
 
   private processMesage(message, sender, sendResponse) {
     this.message = message;
     const messageContent = message.message;
-    switch (messageContent.name) {
-      case 'ADD_OBSERVABLE':
-        this.rxDevtoolsObservableData[messageContent.value.id] = messageContent.value.data;
-        break;
-      case 'ADD_OPERATOR':
-        this.rxDevtoolsObservableData[messageContent.value.id].operators.push(messageContent.value.data);
-        break;
-      case 'NEXT_EVENT':
-        const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
-          return operator.operatorId === messageContent.value.data.operatorId
-        });
-        if (foundOperator) {
-          foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
-        }
-        break;
+    if (messageContent && messageContent.value && messageContent.value.id) {
+      switch (messageContent.name) {
+        case 'ADD_OBSERVABLE':
+          this.rxDevtoolsObservableData[messageContent.value.id] = messageContent.value.data;
+          break;
+        case 'ADD_OPERATOR':
+          if (this.rxDevtoolsObservableData[messageContent.value.id]) {
+            this.rxDevtoolsObservableData[messageContent.value.id].operators.push(messageContent.value.data);
+          }
+          break;
+        case 'NEXT_EVENT':
+          const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
+            return operator.operatorId === messageContent.value.data.operatorId
+          });
+          if (foundOperator) {
+            foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
+          }
+          break;
+      }
     }
 
     console.log(this.rxDevtoolsObservableData);
@@ -74,5 +80,13 @@ export class AppComponent implements OnInit {
     //     foundOperator.values.push({percentage, value: args});
     //   }
     // }
+  }
+
+  observableSelectedInList(observable: RxDevtoolsObservable) {
+    this.observableSelected = observable;
+  }
+
+  getLastMarbleDiagram(observableId: string) {
+    return this.rxDevtoolsObservableData[observableId].operators[this.rxDevtoolsObservableData[observableId].operators.length - 1].values;
   }
 }
