@@ -62,16 +62,18 @@ export class AppComponent implements OnInit {
           }
           break;
         case 'NEXT_EVENT':
-          const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
-            return operator.operatorId === messageContent.value.data.operatorId
-          });
-          if (foundOperator) {
-            foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
+          if (this.rxDevtoolsObservableData[messageContent.value.id]) {
+            const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
+              return operator.operatorId === messageContent.value.data.operatorId
+            });
+            if (foundOperator) {
+              foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
+            }
           }
           break;
       }
     }
-
+    this.test();
     console.log(this.rxDevtoolsObservableData);
     // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
     //     return operator.operatorId === this.__rx_operator_dev_tools_id;
@@ -88,5 +90,14 @@ export class AppComponent implements OnInit {
 
   getLastMarbleDiagram(observableId: string) {
     return this.rxDevtoolsObservableData[observableId].operators[this.rxDevtoolsObservableData[observableId].operators.length - 1].values;
+  }
+
+  test() {
+    let keys = [];
+    Object.keys(this.rxDevtoolsObservableData).forEach((key) => {
+      keys.push({key: key, value: this.rxDevtoolsObservableData[key]});
+    });
+    console.log('returning', keys, this.rxDevtoolsObservableData);
+    return keys;
   }
 }
