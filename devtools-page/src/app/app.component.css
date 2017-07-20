@@ -7,7 +7,6 @@
   display: block;
   width: 20%;
   max-width: 20%;
-  border: 1px solid black;
 }
 
 ul {
@@ -17,7 +16,8 @@ ul {
 
 li {
   padding: 10px 15px;
-  border: 1px solid #ddd
+  border: 1px solid #ddd;
+  cursor: pointer;
 }
 
 .item {

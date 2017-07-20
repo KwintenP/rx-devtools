@@ -73,8 +73,6 @@ export class AppComponent implements OnInit {
           break;
       }
     }
-    this.test();
-    console.log(this.rxDevtoolsObservableData);
     // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
     //     return operator.operatorId === this.__rx_operator_dev_tools_id;
     //   });
@@ -92,12 +90,11 @@ export class AppComponent implements OnInit {
     return this.rxDevtoolsObservableData[observableId].operators[this.rxDevtoolsObservableData[observableId].operators.length - 1].values;
   }
 
-  test() {
+  keyValuesOfData() {
     let keys = [];
     Object.keys(this.rxDevtoolsObservableData).forEach((key) => {
       keys.push({key: key, value: this.rxDevtoolsObservableData[key]});
     });
-    console.log('returning', keys, this.rxDevtoolsObservableData);
     return keys;
   }
 }
