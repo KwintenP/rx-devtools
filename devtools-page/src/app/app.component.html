@@ -4,7 +4,7 @@
     <ul>
       <li *ngFor="let observable of keyValuesOfData()"
           (click)="observableSelectedInList(observable)">
-        {{observable.value.name}}
+        {{observable.value.name}}{{observable.value | json}}
       </li>
     </ul>
   </div>

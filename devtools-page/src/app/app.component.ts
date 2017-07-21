@@ -15,6 +15,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/filter';
 import {RxDevtoolsObservable} from './entities/rx-devtools-observable.entity';
+import {Observable} from 'rxjs/Observable';
 declare const chrome;
 
 @Component({
@@ -26,10 +27,12 @@ export class AppComponent implements OnInit {
   title = 'app works!';
   message = 'start';
   observableSelected: RxDevtoolsObservable;
+  time;
 
   rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
+    Observable.interval(100).take(100).subscribe(val => this.time = val);
   }
 
   ngOnInit() {
@@ -67,7 +70,7 @@ export class AppComponent implements OnInit {
               return operator.operatorId === messageContent.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: 10, value: messageContent.value.data.value});
+              foundOperator.values.push({percentage: this.time, value: messageContent.value.data.value});
             }
           }
           break;
