@@ -26,3 +26,14 @@ Install the chrome extension (add the chrome extension to the store)
 Open your chrome devtools and go to the RxDevtools tab. The tab needs to be active for the extension to work (I'm working on fixing this).
 
 You are all set to go.
+
+### Supported and tested operators
+
+| Operators        | Tested           | Supported since |
+| ------------- |:-------------:| -----:|
+| Map      |yes|0.0.1-alpha.29|
+| Filter      | yes|  0.0.1-alpha.29 |
+| Take | yes     |    0.0.1-alpha.29 |
+| Skip | yes     |    0.0.1-alpha.29 |
+| MergeMap | yes     |    0.0.1-alpha.29 |
+| Do | yes     |    0.0.1-alpha.29 |
