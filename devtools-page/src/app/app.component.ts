@@ -78,6 +78,7 @@ export class AppComponent implements OnInit {
   observableSelectedInList(observable: RxDevtoolsObservable) {
     console.log('clicked!');
     this.observableSelected = observable;
+    this.cd.detectChanges();
   }
 
   getLastMarbleDiagram(observableId: string) {

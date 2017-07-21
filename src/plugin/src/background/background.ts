@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
-  //sendMessage(tabId, {})
+  sendMessage(tabId, {name: 'RESET_DATA'});
 });
 
 const sendMessage = (tabId, request) => {
