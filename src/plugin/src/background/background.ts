@@ -34,11 +34,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   // Messages from content scripts should have sender.tab set
   if (sender.tab) {
     var tabId = sender.tab.id;
-    if (tabId in connections) {
-      connections[tabId].postMessage(request);
-    } else {
-      console.log("Tab not found in connection list.");
-    }
+    sendMessage(sender.tab.id, request.message);
+    console.log('request', request);
   } else {
     console.log("sender.tab not defined.");
   }
@@ -46,5 +43,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
-  console.log('reload detected', connections);
+  //sendMessage(tabId, {})
 });
+
+const sendMessage = (tabId, request) => {
+  if (tabId in connections) {
+    connections[tabId].postMessage(request);
+  } else {
+    console.log("Tab not found in connection list.");
+  }
+}

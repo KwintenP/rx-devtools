@@ -25,7 +25,6 @@ declare const chrome;
 })
 export class AppComponent implements OnInit {
   title = 'app works!';
-  message = 'start';
   observableSelected: RxDevtoolsObservable;
   time;
 
@@ -52,40 +51,32 @@ export class AppComponent implements OnInit {
   }
 
   private processMesage(message, sender, sendResponse) {
-    this.message = message;
-    const messageContent = message.message;
-    if (messageContent && messageContent.value && messageContent.value.id) {
-      switch (messageContent.name) {
+    if (message && message.value && message.value.id) {
+      switch (message.name) {
         case 'ADD_OBSERVABLE':
-          this.rxDevtoolsObservableData[messageContent.value.id] = messageContent.value.data;
+          this.rxDevtoolsObservableData[message.value.id] = message.value.data;
           break;
         case 'ADD_OPERATOR':
-          if (this.rxDevtoolsObservableData[messageContent.value.id]) {
-            this.rxDevtoolsObservableData[messageContent.value.id].operators.push(messageContent.value.data);
+          if (this.rxDevtoolsObservableData[message.value.id]) {
+            this.rxDevtoolsObservableData[message.value.id].operators.push(message.value.data);
           }
           break;
         case 'NEXT_EVENT':
-          if (this.rxDevtoolsObservableData[messageContent.value.id]) {
-            const foundOperator = this.rxDevtoolsObservableData[messageContent.value.id].operators.find(operator => {
-              return operator.operatorId === messageContent.value.data.operatorId
+          if (this.rxDevtoolsObservableData[message.value.id]) {
+            const foundOperator = this.rxDevtoolsObservableData[message.value.id].operators.find(operator => {
+              return operator.operatorId === message.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: this.time, value: messageContent.value.data.value});
+              foundOperator.values.push({percentage: this.time, value: message.value.data.value});
             }
           }
           break;
       }
     }
-    // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
-    //     return operator.operatorId === this.__rx_operator_dev_tools_id;
-    //   });
-    //   if (foundOperator) {
-    //     foundOperator.values.push({percentage, value: args});
-    //   }
-    // }
   }
 
   observableSelectedInList(observable: RxDevtoolsObservable) {
+    console.log('clicked!');
     this.observableSelected = observable;
   }
 
