@@ -37,3 +37,9 @@ You are all set to go.
 | Skip | yes     |    0.0.1-alpha.29 |
 | MergeMap | yes     |    0.0.1-alpha.29 |
 | Do | yes     |    0.0.1-alpha.29 |
+| CombineLatest | yes     |    0.0.1-alpha.29 |
+
+
+#### TODO
+
+[ ] Add correct time calculation (the lib should start it
