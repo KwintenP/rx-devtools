@@ -158,6 +158,7 @@ export const monkeyPathLift = function () {
         sendMessage({
           name: 'ADD_ARRAY_OBSERVABLE',
           value: {
+            // this should be this in some cases, newObs in others, ...
             id: newObs.__rx_observable_dev_tools_id,
             partialRxDevtoolsObservable: rxDevtoolsObservable,
             obsParents,
