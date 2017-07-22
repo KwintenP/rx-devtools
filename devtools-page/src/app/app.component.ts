@@ -71,6 +71,15 @@ export class AppComponent implements OnInit {
             }
           }
           break;
+        case 'ADD_ARRAY_OBSERVABLE':
+          let name;
+          message.value.obsParents.forEach((parentObsId) => {
+            const parentObs = this.rxDevtoolsObservableData[parentObsId];
+            parentObs.standalone = false;
+            this.rxDevtoolsObservableData[message.value.id].obsParents.push(parentObsId);
+            name += ((name !== "") ? "-" : "") + parentObs.name;
+          });
+          name += " " + message.value.name;
       }
     }
   }

@@ -1,7 +1,7 @@
 declare const require;
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
 import {DebugOperator} from './operator/debug';
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.isMonkeyPatched = true;
@@ -51,10 +51,9 @@ export const monkeyPathLift = function () {
     } else {
       // if it's an observable we want to debug
       if (this.__rx_observable_dev_tools_id) {
-        // if it doesn't have en operator, we are probably dealing with an
+        // if it doesn't have an operator, we are probably dealing with an
         // array observable. In this case we just need to re-assign the
         // observable identifier to the new one
-        console.log("operator", operator);
         if (!operator) {
           // check to see if all of the sources are observables we are
           // debugging
@@ -77,22 +76,15 @@ export const monkeyPathLift = function () {
         }
         const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
-        console.log('send event');
-        console.log({
-          operatorId: (operator as any).__rx_operator_dev_tools_id,
-          values: [],
-          operatorName: operatorName
+        sendMessage({
+          name: 'ADD_OPERATOR', value: {
+            id: this.__rx_observable_dev_tools_id, data: {
+              operatorId: (operator as any).__rx_operator_dev_tools_id,
+              values: [],
+              operatorName: operatorName
+            }
+          }
         });
-        sendMessage({name: 'ADD_OPERATOR', value: {id: this.__rx_observable_dev_tools_id, data: {
-          operatorId: (operator as any).__rx_operator_dev_tools_id,
-          values: [],
-          operatorName: operatorName
-        }}});
-        // rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.push({
-        //   operatorId: (operator as any).__rx_operator_dev_tools_id,
-        //   values: [],
-        //   operatorName: operatorName
-        // });
         (operator as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the next observable as well
@@ -107,12 +99,9 @@ export const monkeyPathLift = function () {
         let stop = false;
         let singleObservableDevtoolsId;
         this.array.forEach(obs => {
-          console.log("entered");
-          console.log(obs.__rx_observable_dev_tools_id);
           if (!obs.__rx_observable_dev_tools_id) {
             stop = true;
           } else if (obs.__rx_observable_dev_tools_id) {
-            console.log("obs.__rx_observable_dev_tools_id");
             singleObservableDevtoolsId = obs.__rx_observable_dev_tools_id;
           }
         });
@@ -125,33 +114,22 @@ export const monkeyPathLift = function () {
         if (stop && singleObservableDevtoolsId) {
           const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
           (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
-          console.log('send event');
-          console.log({
-            operatorId: (operator as any).__rx_operator_dev_tools_id,
-            values: [],
-            operatorName: operatorName
+          sendMessage({
+            name: 'ADD_OPERATOR', value: {
+              id: this.__rx_observable_dev_tools_id, data: {
+                operatorId: (operator as any).__rx_operator_dev_tools_id,
+                values: [],
+                operatorName: operatorName
+              }
+            }
           });
-          sendMessage({name: 'ADD_OPERATOR', value: {id: this.__rx_observable_dev_tools_id, data: {
-            operatorId: (operator as any).__rx_operator_dev_tools_id,
-            values: [],
-            operatorName: operatorName
-          }}});
-          // rxDevtoolsObservables[singleObservableDevtoolsId].operators.push({
-          //   operatorId: (operator as any).__rx_operator_dev_tools_id,
-          //   values: [],
-          //   operatorName: operatorName
-          // });
           (operator as any).__rx_observable_dev_tools_id = singleObservableDevtoolsId;
           // Assign the observable dev tools id to the next observable as well
           newObs.__rx_observable_dev_tools_id = singleObservableDevtoolsId;
           return newObs;
-        } else {
-          newObs.__rx_observable_dev_tools_id = uuid();
-        }
-        if (!(operator as any).isMonkeyPatched) {
-          monkeyPathOperator(operator, newObs.__rx_observable_dev_tools_id);
         }
 
+        newObs.__rx_observable_dev_tools_id = uuid();
         const opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         (operator as any).__rx_operator_dev_tools_id = opName + "-" + uuid();
         const rxDevtoolsObservable = {
@@ -165,18 +143,27 @@ export const monkeyPathLift = function () {
           values: [],
           operatorName: opName
         });
-        let name = "";
+        const obsParents = [];
         this.array.forEach(obs => {
-          console.log('send event for parent');
+          obsParents.push(obs.__rx_observable_dev_tools_id);
           // const parentRxDevtoolsObservable = rxDevtoolsObservables[obs.__rx_observable_dev_tools_id];
           // name += ((name !== "") ? "-" : "") + parentRxDevtoolsObservable.name;
           // rxDevtoolsObservable.obsParents.push(obs.__rx_observable_dev_tools_id);
           // parentRxDevtoolsObservable.standalone = false;
         });
-        name += " " + operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
-        rxDevtoolsObservable.name = name;
-        console.log('send event');
+        // name += " " + operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        const name = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         // rxDevtoolsObservables[newObs.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
+        sendMessage({
+          name: 'ADD_ARRAY_OBSERVABLE',
+          value: {
+            id: newObs.__rx_observable_dev_tools_id,
+            partialRxDevtoolsObservable: rxDevtoolsObservable,
+            obsParents,
+            name
+          }
+        })
+
         return newObs;
       }
       return originalLift.apply(this, [operator]);
@@ -188,17 +175,10 @@ export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
-      console.log('send event');
-      sendMessage({name: 'NEXT_EVENT', value: {id: this.__rx_observable_dev_tools_id, data: {operatorId: this.__rx_operator_dev_tools_id, value: args}}});
-      // const foundOperator = rxDevtoolsObservables[this.__rx_observable_dev_tools_id].operators.find(operator => {
-      //     return operator.operatorId === this.__rx_operator_dev_tools_id;
-      //   });
-      //   if (foundOperator) {
-      //     foundOperator.values.push({percentage, value: args});
-      //   }
-      // }
-      (window as any).sendMessage('message from the library');
-      return next.call(this, args);
+      sendMessage({
+        name: 'NEXT_EVENT',
+        value: {id: this.__rx_observable_dev_tools_id, data: {operatorId: this.__rx_operator_dev_tools_id, value: args}}
+      });
     }
     return next.call(this, args);
   };
