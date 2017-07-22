@@ -42,4 +42,4 @@ You are all set to go.
 
 #### TODO
 
-[ ] Add correct time calculation (the lib should start it
+- [ ] Add correct time calculation (the lib should start it
