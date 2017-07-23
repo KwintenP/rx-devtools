@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
   rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
-    Observable.interval(100).take(100).subscribe(val => this.time = val);
   }
 
   ngOnInit() {
@@ -67,7 +66,7 @@ export class AppComponent implements OnInit {
               return operator.operatorId === message.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: this.time, value: message.value.data.value});
+              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value});
             }
           }
           break;

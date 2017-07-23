@@ -1,8 +1,13 @@
 declare const require;
 import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 import {Subscriber} from 'rxjs/Subscriber';
 import {v4 as uuid} from 'uuid';
 import {DebugOperator} from './operator/debug';
+import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/take';
+
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.isMonkeyPatched = true;
   const originalOperatorCall = operator.call;
@@ -172,13 +177,26 @@ export const monkeyPathLift = function () {
   };
 };
 
+let time;
+
+const resetTimer$ = new Subject<void>();
+resetTimer$.switchMap(_ => Observable.interval(100).take(100))
+  .subscribe(val => this.time = val);
+
 export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
       sendMessage({
         name: 'NEXT_EVENT',
-        value: {id: this.__rx_observable_dev_tools_id, data: {operatorId: this.__rx_operator_dev_tools_id, value: args}}
+        value: {
+          id: this.__rx_observable_dev_tools_id,
+          data: {
+            operatorId: this.__rx_operator_dev_tools_id,
+            value: args,
+            percentage: time
+          }
+        }
       });
     }
     return next.call(this, args);
@@ -196,3 +214,5 @@ const sendMessage = (message: any) => {
     source: 'rx-devtools-plugin'
   }, '*');
 };
+
+// TODO: when the plugin sends a reset, perform 'resetTimer$.next()' to reset the timer
