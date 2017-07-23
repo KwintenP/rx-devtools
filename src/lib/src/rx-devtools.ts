@@ -57,7 +57,7 @@ export const monkeyPathLift = function () {
         if (!operator) {
           // check to see if all of the sources are observables we are
           // debugging
-          let stop = this.source.array && this.source.array.length > 0;
+          let stop = this.source.array && this.source.array.length === 0;
           this.source.array.forEach(obs => {
             if (!obs.__rx_observable_dev_tools_id) {
               stop = true;
@@ -96,8 +96,7 @@ export const monkeyPathLift = function () {
         }
         // this is probably an array observable
         // check if all of the source observables are in debug mode
-        console.log('whatever, does this even fuckingw ork');
-        let stop = this.array && this.array.length > 0;
+        let stop = this.array && this.array.length === 0;
         let singleObservableDevtoolsId;
         this.array.forEach(obs => {
           if (!obs.__rx_observable_dev_tools_id) {
