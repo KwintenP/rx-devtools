@@ -21,7 +21,7 @@ const injectScript = (path: string) => {
 
 injectScript('rx-devtools.bundle.js');
 
-window.addEventListener('message', function (event: { source: any, data: { source: string } }) {
+window.addEventListener('message', function (event: { source: any, data: any }) {
   // Only accept messages from the same frame
   if (event.source !== window) {
     return;
@@ -34,6 +34,8 @@ window.addEventListener('message', function (event: { source: any, data: { sourc
     return;
   }
 
-  console.log('sending', message);
+  if (message && message.message && message.message.value && message.message.value.data) {
+    console.log('sending', message.message.value.data.value, message.message.value.data.operatorId, message.message.value.id);
+  }
   chrome.runtime.sendMessage(message);
 });

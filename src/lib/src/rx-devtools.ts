@@ -9,16 +9,12 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
 
-export const monkeyPathOperator = function (operator, observableDevToolsId?) {
+export const monkeyPathOperator = function (operator) {
   operator.isMonkeyPatched = true;
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
     (subscriber as any).__rx_operator_dev_tools_id = this.__rx_operator_dev_tools_id;
-    if (!observableDevToolsId) {
-      (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
-    } else {
-      (subscriber as any).__rx_observable_dev_tools_id = observableDevToolsId;
-    }
+    (subscriber as any).__rx_observable_dev_tools_id = this.__rx_observable_dev_tools_id;
     return originalOperatorCall.call(this, subscriber, source);
   };
 };
@@ -151,18 +147,11 @@ export const monkeyPathLift = function () {
         const obsParents = [];
         this.array.forEach(obs => {
           obsParents.push(obs.__rx_observable_dev_tools_id);
-          // const parentRxDevtoolsObservable = rxDevtoolsObservables[obs.__rx_observable_dev_tools_id];
-          // name += ((name !== "") ? "-" : "") + parentRxDevtoolsObservable.name;
-          // rxDevtoolsObservable.obsParents.push(obs.__rx_observable_dev_tools_id);
-          // parentRxDevtoolsObservable.standalone = false;
         });
-        // name += " " + operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         const name = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
-        // rxDevtoolsObservables[newObs.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
         sendMessage({
           name: 'ADD_ARRAY_OBSERVABLE',
           value: {
-            // this should be this in some cases, newObs in others, ...
             id: newObs.__rx_observable_dev_tools_id,
             partialRxDevtoolsObservable: rxDevtoolsObservable,
             obsParents,
