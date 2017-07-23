@@ -1,11 +1,8 @@
 {
   "name": "RxJS developer tools",
-  "short_name": "Augury",
-  "version": "1.10.0",
-  "description": "Extends the Developer Tools, adding tools for debugging and profiling Angular applications.",
-  "permissions": [
-    "storage"
-  ],
+  "short_name": "Rx Devtools",
+  "version": "0.0.0.1",
+  "description": "Can be used to visualize streams in RxJS applications",
   "devtools_page": "devtools.html",
   "background": {
     "scripts": [

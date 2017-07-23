@@ -133,6 +133,7 @@ export const monkeyPathLift = function () {
         newObs.__rx_observable_dev_tools_id = uuid();
         const opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         (operator as any).__rx_operator_dev_tools_id = opName + "-" + uuid();
+        (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
         const rxDevtoolsObservable = {
           operators: [],
           obsParents: [],
