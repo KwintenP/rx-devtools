@@ -15,7 +15,6 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/filter';
 import {RxDevtoolsObservable} from './entities/rx-devtools-observable.entity';
-import {Observable} from 'rxjs/Observable';
 declare const chrome;
 
 @Component({
@@ -29,6 +28,7 @@ export class AppComponent implements OnInit {
   time;
 
   rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
+  valueSelected;
 
   constructor(private zone: NgZone, private cd: ChangeDetectorRef) {
   }
@@ -53,7 +53,11 @@ export class AppComponent implements OnInit {
     if (message && message.value && message.value.id) {
       switch (message.name) {
         case 'ADD_OBSERVABLE':
-          this.rxDevtoolsObservableData[message.value.id] = message.value.data;
+          if (!this.rxDevtoolsObservableData[message.value.id]) {
+            this.rxDevtoolsObservableData[message.value.id] = message.value.data;
+          } else {
+            this.rxDevtoolsObservableData[message.value.id].name = message.value.data.name;
+          }
           break;
         case 'ADD_OPERATOR':
           if (this.rxDevtoolsObservableData[message.value.id]) {
@@ -71,26 +75,28 @@ export class AppComponent implements OnInit {
           }
           break;
         case 'ADD_ARRAY_OBSERVABLE':
-          let name;
+          this.rxDevtoolsObservableData[message.value.id] = message.value.partialRxDevtoolsObservable;
           message.value.obsParents.forEach((parentObsId) => {
             const parentObs = this.rxDevtoolsObservableData[parentObsId];
             parentObs.standalone = false;
             this.rxDevtoolsObservableData[message.value.id].obsParents.push(parentObsId);
-            name += ((name !== "") ? "-" : "") + parentObs.name;
           });
-          name += " " + message.value.name;
       }
     }
   }
 
   observableSelectedInList(observable: RxDevtoolsObservable) {
-    console.log('clicked!');
     this.observableSelected = observable;
     this.cd.detectChanges();
   }
 
   getLastMarbleDiagram(observableId: string) {
     return this.rxDevtoolsObservableData[observableId].operators[this.rxDevtoolsObservableData[observableId].operators.length - 1].values;
+  }
+
+  valueSelectedEvent(value: string) {
+    this.valueSelected = value;
+    this.cd.detectChanges();
   }
 
   keyValuesOfData() {

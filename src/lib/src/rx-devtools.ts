@@ -7,6 +7,7 @@ import {DebugOperator} from './operator/debug';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/startWith';
 
 export const monkeyPathOperator = function (operator, observableDevToolsId?) {
   operator.isMonkeyPatched = true;
@@ -51,7 +52,6 @@ export const monkeyPathLift = function () {
       });
       console.log('generated obs id', this.__rx_observable_dev_tools_id);
       sendMessage({name: 'ADD_OBSERVABLE', value: {id: this.__rx_observable_dev_tools_id, data: rxDevtoolsObservable}});
-      // rxDevtoolsObservables[this.__rx_observable_dev_tools_id] = rxDevtoolsObservable;
       return newObs;
     } else {
       // if it's an observable we want to debug
@@ -179,9 +179,10 @@ export const monkeyPathLift = function () {
 
 let time;
 
-const resetTimer$ = new Subject<void>();
-resetTimer$.switchMap(_ => Observable.interval(100).take(100))
-  .subscribe(val => this.time = val);
+const resetTimer$ = new Subject<string>().startWith('');
+resetTimer$
+  .switchMap(_ => Observable.interval(150).take(100))
+  .subscribe(val => time = val);
 
 export const monkeyPathNext = function () {
   const next = Subscriber.prototype.next;

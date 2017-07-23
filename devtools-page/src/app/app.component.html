@@ -12,13 +12,13 @@
     <div *ngIf="observableSelected">
       <div *ngIf="observableSelected.value.standalone">
         <div *ngFor="let parentObs of observableSelected.value.obsParents">
-          <app-marble-diagram (valueSelected)="valueSelected = $event"
+          <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
                               [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
         </div>
       </div>
       <div *ngFor="let operator of observableSelected.value.operators">
         <app-operator [name]="operator.operatorName"></app-operator>
-        <app-marble-diagram (valueSelected)="this.valueSelected = $event"
+        <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
                             [values]="operator.values"></app-marble-diagram>
       </div>
     </div>

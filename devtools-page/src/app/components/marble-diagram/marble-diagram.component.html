@@ -6,7 +6,7 @@
     <app-marble *ngFor="let value of values; let i = index"
                 [value]="value.value"
                 [left]="value.percentage"
-                [index]="i"
+                [index]="value.percentage"
                 (valueSelected)="valueSelected.emit($event)"></app-marble>
   </div>
 </div>
