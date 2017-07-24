@@ -1,3 +1,4 @@
+import {PartialObserver} from 'rxjs/Observer';
 declare const require;
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
