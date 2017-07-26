@@ -349,6 +349,7 @@ export const monkeyPathNext = function () {
 export const setupRxDevtools = () => {
   monkeyPathNext();
   monkeyPathLift();
+  monkeyPathLiftSubject();
 }
 
 const sendMessage = (message: any) => {
