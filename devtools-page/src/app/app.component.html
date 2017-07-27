@@ -5,7 +5,7 @@
       <li *ngFor="let observable of keyValuesOfData()"
           (click)="observableSelectedInList(observable)"
           [class.selected]="observable?.key === observableSelected?.key">
-        {{observable.value.name}} {{observable?.key === observableSelected?.key}}
+        {{observable.value.name}}
       </li>
     </ul>
   </div>
@@ -26,7 +26,7 @@
   </div>
   <div class="item item-value">
     <pre>
-      {{valueSelected | json | prettyprint}}
+      {{valueSelected | prettyprint}}
     </pre>
   </div>
 </div>
