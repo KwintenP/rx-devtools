@@ -9,6 +9,7 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
 
 export const monkeyPathOperator = function (operator) {
   operator.isMonkeyPatched = true;
@@ -178,11 +179,12 @@ const liftMonkeyPathFunction = (originalLift) => {
   }
 }
 
-let time;
+let time = 0;
 
 const resetTimer$ = new Subject<string>().startWith('');
 resetTimer$
-  .switchMap(_ => Observable.interval(150).take(100))
+  .switchMap(_ => Observable.interval(150).take(99))
+  .map(val => val + 1)
   .subscribe(val => time = val);
 
 export const monkeyPathNext = function () {
