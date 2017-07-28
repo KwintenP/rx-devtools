@@ -57,7 +57,6 @@ const liftMonkeyPathFunction = (originalLift) => {
         values: [],
         operatorName: "debug",
       });
-      console.log('generated obs id', this.__rx_observable_dev_tools_id);
       sendMessage({name: 'ADD_OBSERVABLE', value: {id: this.__rx_observable_dev_tools_id, data: rxDevtoolsObservable}});
       return newObs;
     } else {

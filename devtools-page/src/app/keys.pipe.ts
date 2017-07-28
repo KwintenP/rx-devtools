@@ -6,7 +6,6 @@ export class KeysPipe implements PipeTransform {
     Object.keys(value).forEach((key) => {
       keys.push({key: key, value: value[key]});
     });
-    console.log('returning', keys, value);
     return keys;
   }
 }

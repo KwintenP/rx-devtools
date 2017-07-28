@@ -34,8 +34,5 @@ window.addEventListener('message', function (event: { source: any, data: any }) 
     return;
   }
 
-  if (message && message.message && message.message.value && message.message.value.data) {
-    console.log('sending', message.message.value.data.value, message.message.value.data.operatorId, message.message.value.id);
-  }
   chrome.runtime.sendMessage(message);
 });

@@ -1,7 +1,6 @@
 // background.js
 var connections = {};
 
-console.log('connection requested');
 chrome.runtime.onConnect.addListener(function (port) {
   var extensionListener = function (message, sender, sendResponse) {
     // The original connection event doesn't include the tab ID of the
@@ -35,7 +34,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (sender.tab) {
     var tabId = sender.tab.id;
     sendMessage(sender.tab.id, request.message);
-    console.log('request', request);
   } else {
     console.log("sender.tab not defined.");
   }
