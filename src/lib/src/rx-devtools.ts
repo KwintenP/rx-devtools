@@ -124,7 +124,13 @@ const liftMonkeyPathFunction = (originalLift) => {
         const newObs = originalLift.apply(this, [operator]);
         // Assign the observable dev tools id to the newly lifted observable
         if (stop && singleObservableDevtoolsId) {
-          const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+          let operatorName;
+          // Might not always be correct, but it might be in most case
+          if (operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
+            operatorName = 'StartWith';
+          } else {
+            operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"))
+          }
           (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
           sendMessage({
             name: 'ADD_OPERATOR', value: {
