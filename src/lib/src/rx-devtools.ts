@@ -144,6 +144,7 @@ const liftMonkeyPathFunction = (originalLift) => {
         newObs.__rx_observable_dev_tools_id = uuid();
         (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
         let opName;
+        // Might not always be correct but in most of the cases it will
         if(operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
           opName = 'Concat';
         } else {
