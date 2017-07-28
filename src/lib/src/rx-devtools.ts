@@ -10,6 +10,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
+import {MergeAllOperator} from 'rxjs/operator/mergeAll';
 
 export const monkeyPathOperator = function (operator) {
   operator.isMonkeyPatched = true;
@@ -142,7 +143,12 @@ const liftMonkeyPathFunction = (originalLift) => {
 
         newObs.__rx_observable_dev_tools_id = uuid();
         (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
-        const opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        let opName;
+        if(operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
+          opName = 'Concat';
+        } else {
+          opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
+        }
         (operator as any).__rx_operator_dev_tools_id = opName + "-" + uuid();
         (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
         const rxDevtoolsObservable = {
