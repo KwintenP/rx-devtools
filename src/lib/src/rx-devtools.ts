@@ -233,3 +233,4 @@ const sendMessage = (message: any) => {
 };
 
 // TODO: when the plugin sends a reset, perform 'resetTimer$.next()' to reset the timer
+// TOOD: fix all the mergeAll operators with a custom 'guess'
