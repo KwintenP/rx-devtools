@@ -1,5 +1,3 @@
-import {PartialObserver} from 'rxjs/Observer';
-declare const require;
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Subscriber} from 'rxjs/Subscriber';
@@ -11,6 +9,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {MergeAllOperator} from 'rxjs/operator/mergeAll';
+declare const require;
 
 export const monkeyPathOperator = function (operator) {
   operator.isMonkeyPatched = true;
@@ -151,7 +150,7 @@ const liftMonkeyPathFunction = (originalLift) => {
         (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
         let opName;
         // Might not always be correct but in most of the cases it will
-        if(operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
+        if (operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
           opName = 'Concat';
         } else {
           opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
@@ -227,7 +226,7 @@ export const setupRxDevtools = () => {
 
 const sendMessage = (message: any) => {
   window.postMessage({
-    message,
+    message: JSON.stringify(message),
     source: 'rx-devtools-plugin'
   }, '*');
 };

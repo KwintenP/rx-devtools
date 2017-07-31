@@ -5,9 +5,17 @@ chrome.runtime.onConnect.addListener(function (port) {
   var extensionListener = function (message, sender, sendResponse) {
     // The original connection event doesn't include the tab ID of the
     // DevTools page, so we need to send it explicitly.
-    if (message.name == "rx-devtools-page-init") {
+    if (message.name === "rx-devtools-page-init") {
       connections[message.tabId] = port;
       return;
+    } else if (message.name === "RESET_TIMER") {
+      console.log('entered in the background');
+
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
+          console.log(response.farewell);
+        });
+      });
     }
   }
 
@@ -51,3 +59,4 @@ const sendMessage = (tabId, request) => {
     console.log("Tab not found in connection list.");
   }
 }
+
