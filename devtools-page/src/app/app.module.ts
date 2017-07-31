@@ -11,6 +11,7 @@ import { MarbleLineComponent } from './components/marble-line/marble-line.compon
 import { MarbleDiagramComponent } from './components/marble-diagram/marble-diagram.component';
 import { OperatorComponent } from './components/operator/operator.component';
 import { PrettyPrintJsonPipe } from './pretty-print-json.pipe';
+import {MarblesOverviewComponent} from './containers/marbles-overview/marbles-overview.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PrettyPrintJsonPipe } from './pretty-print-json.pipe';
     MarbleLineComponent,
     MarbleDiagramComponent,
     OperatorComponent,
-    PrettyPrintJsonPipe
+    PrettyPrintJsonPipe,
+    MarblesOverviewComponent
   ],
   imports: [
     BrowserModule,
