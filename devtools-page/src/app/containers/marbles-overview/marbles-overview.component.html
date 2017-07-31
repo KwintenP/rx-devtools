@@ -1,0 +1,32 @@
+<button type="button" (click)="clearData()">Clear data and reset timer</button>
+<div class="main">
+  <div class="list">
+    <ul>
+      <li *ngFor="let observable of keyValuesOfData()"
+          (click)="observableSelectedInList(observable)"
+          [class.selected]="observable?.key === observableSelected?.key">
+        {{observable.value.name}}
+      </li>
+    </ul>
+  </div>
+  <div class="sandboxRoot item">
+    <div *ngIf="observableSelected">
+      <div *ngIf="observableSelected.value.standalone">
+        <div *ngFor="let parentObs of observableSelected.value.obsParents">
+          <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                              [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
+        </div>
+      </div>
+      <div *ngFor="let operator of observableSelected.value.operators">
+        <app-operator [name]="operator.operatorName"></app-operator>
+        <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                            [values]="operator.values"></app-marble-diagram>
+      </div>
+    </div>
+  </div>
+  <div class="item item-value">
+    <pre>
+      {{valueSelected | prettyprint}}
+    </pre>
+  </div>
+</div>
