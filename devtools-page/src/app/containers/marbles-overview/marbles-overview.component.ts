@@ -100,10 +100,9 @@ export class MarblesOverviewComponent implements OnInit {
     this.valueSelected = undefined;
     this.observableSelected = undefined;
 
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
-        console.log(response.farewell);
-      });
+    this.backgroundPageConnection.postMessage({
+      name: 'RESET_TIMER',
+      tabId: chrome.devtools.inspectedWindow.tabId
     });
   }
 }
