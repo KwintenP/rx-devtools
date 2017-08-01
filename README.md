@@ -33,7 +33,20 @@ setupRxDevtools();
 
 The extension can be used to visualize streams in your application using marble diagrams. To make the extension work, open your developer tools and open the 'RxDevtools' tab. The tab has to be open before the extension will work (I'm trying to find a way around this). 
 
-The extension will capture the emissions of observables for a certain timeframe. The timeframe at this moment in time is not configurable and is set to 15s (this will be fixed asap, see todo's at the bottom). The extension will start counting as soon as the application starts and will show the marbles onto the marble diagrams with a timeframe of 15s in mind. If a value is emitted after 5s of this 15s timeframe, it will be visualized at 33% of the marble diagrams length. Every value arriving after this 15s timeframe will be visualised at the end (again, this will be fixed asap). 
+The extension will capture the emissions of events in observables for a certain timeframe. The timeframe at this moment in time is not configurable and is set to 15s (this will be fixed asap, see todo's at the bottom). The extension will start counting as soon as the application starts and will show the marbles onto the marble diagrams with a timeframe of 15s in mind. If a value is emitted after 5s of this 15s timeframe, it will be visualized at 33% of the marble diagrams length. Every value arriving after this 15s timeframe will be visualised at the end (again, this will be fixed asap). To reset the timer, you need to refresh the page.
+
+For observables to be debugged, you need to add a special operator to denote you want to debug it. This can be done using the 'debug' operator.
+ 
+```typescript
+import 'rx-devtools/add/operator/debug';
+
+const interval$ = Observable.interval(1000)
+  .debug('interval')
+  .startWith(10)
+  .take(10)
+  .filter((val: number) => val % 2 > 0)
+  .map((val: number) => val * 2);
+```
 
 
 You are all set to go.
