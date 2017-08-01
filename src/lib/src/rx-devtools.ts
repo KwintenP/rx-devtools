@@ -225,10 +225,14 @@ export const setupRxDevtools = () => {
 }
 
 const sendMessage = (message: any) => {
-  window.postMessage({
-    message: message,
-    source: 'rx-devtools-plugin'
-  }, '*');
+  try {
+    window.postMessage({
+      message: message,
+      source: 'rx-devtools-plugin'
+    }, '*');
+  } catch(ex) {
+    console.log('error sending something to the plugin', ex);
+  }
 };
 
 // TODO: when the plugin sends a reset, perform 'resetTimer$.next()' to reset the timer
