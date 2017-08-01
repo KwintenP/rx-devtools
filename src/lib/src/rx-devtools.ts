@@ -31,9 +31,7 @@ export const monkeyPatchLiftSubject = function () {
   Subject.prototype.lift = liftMonkeyPatchFunction(originalLift);
 };
 
-export const monkeyPa
-
-const liftMonkeyPatchFunction = (originalLift) => {
+export const liftMonkeyPatchFunction = (originalLift) => {
   return function (operator: any) {
     // Check if the operator is a debug operator, if so we will:
     // - monkeyPatch the operator to be able to get the values from it
@@ -228,7 +226,7 @@ export const setupRxDevtools = () => {
 
 const sendMessage = (message: any) => {
   window.postMessage({
-    message: JSON.stringify(message),
+    message: message,
     source: 'rx-devtools-plugin'
   }, '*');
 };
