@@ -31,11 +31,14 @@ setupRxDevtools();
 
 ### How to use
 
-The extension can be used to visualize streams in your application using marble diagrams. To mak
+The extension can be used to visualize streams in your application using marble diagrams. To make the extension work, open your developer tools and open the 'RxDevtools' tab. The tab has to be open before the extension will work (I'm trying to find a way around this). 
+
+The extension will capture the emissions of observables for a certain timeframe. The timeframe at this moment in time is not configurable and is set to 15s (this will be fixed asap, see todo's at the bottom). The extension will start counting as soon as the application starts and will show the marbles onto the marble diagrams with a timeframe of 15s in mind. If a value is emitted after 5s of this 15s timeframe, it will be visualized at 33% of the marble diagrams length. Every value arriving after this 15s timeframe will be visualised at the end (again, this will be fixed asap). 
+
 
 You are all set to go.
 
-### Supported and tested operators
+### Supported and tested operators*
 
 | Operators        | Tested           | Supported since |
 | ------------- |:-------------:| -----:|
@@ -45,9 +48,17 @@ You are all set to go.
 | Skip | yes     |    0.0.1-alpha.29 |
 | MergeMap | yes     |    0.0.1-alpha.29 |
 | Do | yes     |    0.0.1-alpha.29 |
+| StartWith | yes     |    0.0.1-alpha.29 |
 | CombineLatest | yes     |    0.0.1-alpha.29 |
+| Zip | yes     |    0.0.1-alpha.29 |
+| Concat | yes     |    0.0.1-alpha.29 |
+
+* This is a non-exhaustive list. The extension will definitely support more operators as of today but they aren't all properly tested. The ones above have been tested and should be working.
 
 
 #### TODO
 
-- [ ] Add correct time calculation (the lib should start it
+- [ ] Make the recording timeframe resettable
+- [ ] Visualize different subscriptions on the same stream properly (currently they are visualized on the same marble diagram)
+
+(If you have any addition you want in this library, let me know through github issues).
