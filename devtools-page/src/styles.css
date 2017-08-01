@@ -14,7 +14,7 @@
   overflow: visible;
   display: block;
   width: 100%;
-  height: calc(96px);
+  height: calc(80px);
   position: relative;
   cursor: default;
 }
@@ -27,7 +27,7 @@
   overflow: visible;
   display: block;
   width: 100%;
-  height: calc(96px);
+  height: calc(80px);
   position: relative;
   cursor: default;
 }
@@ -36,7 +36,7 @@
   background-color: rgb(50, 50, 50);
   height: 2px;
   position: absolute;
-  top: calc(48px);
+  top: calc(40px);
   left: 22px;
   right: 22px;
 }
@@ -50,14 +50,14 @@
   display: inline-block;
   right: calc(21px);
   position: absolute;
-  top: calc(41px);
+  top: calc(33px);
 }
 
 .marbleLocation {
   position: absolute;
   left: calc(70px);
   right: calc(70px);
-  top: calc(48px);
+  top: calc(40px);
   height: 44px;
   margin-top: calc(-22px);
 }
