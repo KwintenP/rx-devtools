@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 import {MergeAllOperator} from 'rxjs/operator/mergeAll';
 declare const require;
 
-export const monkeyPathOperator = function (operator) {
+export const monkeyPatchOperator = function (operator) {
   operator.isMonkeyPatched = true;
   const originalOperatorCall = operator.call;
   operator.call = function (subscriber, source) {
@@ -21,17 +21,19 @@ export const monkeyPathOperator = function (operator) {
   };
 };
 
-export const monkeyPathLiftObservable = function () {
+export const monkeyPatchLiftObservable = function () {
   const originalLift = Observable.prototype.lift;
-  Observable.prototype.lift = liftMonkeyPathFunction(originalLift);
+  Observable.prototype.lift = liftMonkeyPatchFunction(originalLift);
 };
 
-export const monkeyPathLiftSubject = function () {
+export const monkeyPatchLiftSubject = function () {
   const originalLift = Subject.prototype.lift;
-  Subject.prototype.lift = liftMonkeyPathFunction(originalLift);
+  Subject.prototype.lift = liftMonkeyPatchFunction(originalLift);
 };
 
-const liftMonkeyPathFunction = (originalLift) => {
+export const monkeyPa
+
+const liftMonkeyPatchFunction = (originalLift) => {
   return function (operator: any) {
     // Check if the operator is a debug operator, if so we will:
     // - monkeyPatch the operator to be able to get the values from it
@@ -40,7 +42,7 @@ const liftMonkeyPathFunction = (originalLift) => {
     // - send a message to the plugin so the values can be visualised
     if (operator instanceof DebugOperator) {
       if (!(operator as any).monkeyPatched) {
-        monkeyPathOperator(operator);
+        monkeyPatchOperator(operator);
       }
       // Execute the original function and take the resulting observable
       const newObs = originalLift.apply(this, [operator]);
@@ -83,7 +85,7 @@ const liftMonkeyPathFunction = (originalLift) => {
           return newObs;
         }
         if (!(operator as any).isMonkeyPatched) {
-          monkeyPathOperator(operator);
+          monkeyPatchOperator(operator);
         }
         const operatorName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         (operator as any).__rx_operator_dev_tools_id = operatorName + "-" + uuid();
@@ -103,7 +105,7 @@ const liftMonkeyPathFunction = (originalLift) => {
         return newObs;
       } else if (this.array) {
         if (!(operator as any).isMonkeyPatched) {
-          monkeyPathOperator(operator);
+          monkeyPatchOperator(operator);
         }
         // this is probably an array observable
         // check if all of the source observables are in debug mode
@@ -198,7 +200,7 @@ resetTimer$
   .map(val => val + 1)
   .subscribe(val => time = val);
 
-export const monkeyPathNext = function () {
+export const monkeyPatchNext = function () {
   const next = Subscriber.prototype.next;
   Subscriber.prototype.next = function (args) {
     if (this.__rx_observable_dev_tools_id) {
@@ -219,9 +221,9 @@ export const monkeyPathNext = function () {
 }
 
 export const setupRxDevtools = () => {
-  monkeyPathNext();
-  monkeyPathLiftObservable();
-  monkeyPathLiftSubject();
+  monkeyPatchNext();
+  monkeyPatchLiftObservable();
+  monkeyPatchLiftSubject();
 }
 
 const sendMessage = (message: any) => {
