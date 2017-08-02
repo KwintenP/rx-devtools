@@ -2,7 +2,7 @@
 
 This is a chrome extension that can be used to visualize RxJS streams in realtime. 
 
-**Disclaimer:** This project started out as a POC to see if it was possible to visualize RxJS streams. It was later redefined as a chrome extension. This project is still a WIP. I encourage you to use it but remember, at this moment in time it is still in an early alpha phase and might not always work properly. I haven't properly tested all the operators, check the table below to see which ones should be working as of the current version. Feel free to create github issues when you discover problems, I will try to tackle them asap. 
+**Disclaimer:** This project started out as a POC to see if it was possible to visualize RxJS streams. It was later redefined as a chrome extension. This project is still a WIP. I encourage you to use it but remember, at this moment in time it is still in **an early alpha phase** and might not always work properly. I haven't properly tested all the operators, check the table below to see which ones should be working as of the current version. Feel free to create github issues when you discover problems, I will try to tackle them asap. 
  
 ### Installation
 
@@ -23,7 +23,7 @@ import { setupRxDevtools } from 'rx-devtools/rx-devtools';
 setupRxDevtools();
 ```
 
-** Note: this should only be active in a development environment. Try to avoid having this code in your production build.**
+**Note:** this should only be active in a development environment. Try to avoid having this code in your production build.
 
 #### Chrome extension
 
@@ -48,7 +48,8 @@ const interval$ = Observable.interval(1000)
   .startWith(10)
   .take(10)
   .filter((val: number) => val % 2 > 0)
-  .map((val: number) => val * 2);
+  .map((val: number) => val * 2)
+  .subscribe();
 ```
 
 This will generate the following marble diagram in the Rx devtools extension.
@@ -78,13 +79,14 @@ You can also work with operators that are combining observables. Let's look at t
    
  Observable.combineLatest(interval$, other$)
    .debug('combined')
-   .subscribe(() => {
-   });
+   .subscribe();
 ```
 
 Notice that we have two streams we are combining using `combineLatest`. For this to work, both the streams and the combined stream must have the `debug` operator on them. Otherwise, the streams will not be visualised. When running this code, the following will be generated.
 
 ![marble-diagram](https://www.dropbox.com/s/6z4c7bftc74gf6m/Screenshot%202017-08-02%2020.54.06.png?raw=1)
+
+**Note:** You can clear the list by clicking the 'Clear data' button (obviously).
 
 You can see all the streams have an entry in the list. If you click 'interval' or 'second interval' you will see a similar result as the one above. If you click the 'combined' entry however, you will see the combination stream as shown below.
 
