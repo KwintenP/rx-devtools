@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --port 9000 --inline --progress --profile --colors --watch --content-base src/",
     "prebuild": "shx rm -rf ./dist/ && cd ../../devtools-page && npm run build",
     "build": "webpack --config webpack.config.js && shx cp -r ../../devtools-page/dist/* ./dist/ && cp manifest.json ./dist/ && cp devtools.html ./dist/",
-    "build.prod": "webpack --config webpack.config.js -p",
+    "build:prod": "webpack --config webpack.config.js -p",
     "test": "karma start karma.config.js"
   },
   "keywords": [
@@ -15,7 +15,11 @@
     "webpack2",
     "typescript"
   ],
-  "author": "Juri Strumpflohner",
+  "author": {
+    "name": "KwintenP",
+    "email": "kwinten.pisman@gmail.com",
+    "url": "blog.kwintenp.com"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/core-js": "0.9.42",
