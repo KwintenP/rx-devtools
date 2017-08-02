@@ -82,9 +82,17 @@ export class MarblesOverviewComponent implements OnInit {
     return this.rxDevtoolsObservableData[observableId].operators[this.rxDevtoolsObservableData[observableId].operators.length - 1].values;
   }
 
+  getParentObsName(observableId: string) {
+    return this.rxDevtoolsObservableData[observableId].name;
+  }
+
   valueSelectedEvent(value: string) {
     this.valueSelected = value;
     this.cd.detectChanges();
+  }
+
+  parentObsSelected(observableId: string) {
+    this.observableSelected = this.rxDevtoolsObservableData[observableId];
   }
 
   keyValuesOfData() {
@@ -93,6 +101,10 @@ export class MarblesOverviewComponent implements OnInit {
       keys.push({key: key, value: this.rxDevtoolsObservableData[key]});
     });
     return keys;
+  }
+
+  hasData() {
+    return Object.keys(this.rxDevtoolsObservableData).length > 0;
   }
 
   clearData() {
