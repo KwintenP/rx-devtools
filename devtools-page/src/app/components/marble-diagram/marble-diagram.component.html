@@ -3,10 +3,14 @@
   <div class="diagramArrowHead"></div>
   <div class="marbleLocation">
     <app-marble-line></app-marble-line>
-    <app-marble *ngFor="let value of values; let i = index"
-                [value]="value.value"
-                [left]="value.percentage"
-                [index]="value.percentage"
-                (valueSelected)="valueSelected.emit($event)"></app-marble>
+    <div class="marbleRoot diagramMarble"
+         *ngFor="let value of values; let i = index"
+         [style.left.%]="value.percentage"
+         (click)="valueSelectedEvent(value.value)">
+      <svg viewBox="0 0 1 1">
+        <circle cx="0.5" cy="0.5" r="0.47" stroke-width="0.06px"></circle>
+      </svg>
+      <p class="marbleContent">{{value.percentage}}</p>
+    </div>
   </div>
 </div>
