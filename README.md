@@ -84,13 +84,15 @@ You can also work with operators that are combining observables. Let's look at t
 
 Notice that we have two streams we are combining using `combineLatest`. For this to work, both the streams and the combined stream must have the `debug` operator on them. Otherwise, the streams will not be visualised. When running this code, the following will be generated.
 
-![marble-diagram](https://www.dropbox.com/s/6z4c7bftc74gf6m/Screenshot%202017-08-02%2020.54.06.png?dl=0)
+![marble-diagram](https://www.dropbox.com/s/6z4c7bftc74gf6m/Screenshot%202017-08-02%2020.54.06.png?raw=1)
 
 You can see all the streams have an entry in the list. If you click 'interval' or 'second interval' you will see a similar result as the one above. If you click the 'combined' entry however, you will see the combination stream as shown below.
 
-![marble-diagram](https://www.dropbox.com/s/ptygvg00ixfi6xk/Screenshot%202017-08-02%2020.56.52.png?dl=0)
+![marble-diagram](https://www.dropbox.com/s/ptygvg00ixfi6xk/Screenshot%202017-08-02%2020.56.52.png?raw=1)
 
+It will show the last stream from the 'interval' and the last one of the 'second interval' first. Below you will see the combination operator. 
 
+That's it, you should be ready to get started ;).
 
 ### Supported and tested operators*
 
