@@ -27,7 +27,8 @@ setupRxDevtools();
 
 #### Chrome extension
 
-
+Install the following chrome extension:
+<a href="https://chrome.google.com/webstore/detail/rxjs-developer-tools/dedeglckjaldaochjmnochcfamanokie" target="_blank">Rx Devtools</a>
 
 ### How to use
 
