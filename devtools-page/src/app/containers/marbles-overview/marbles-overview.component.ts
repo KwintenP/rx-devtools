@@ -17,6 +17,8 @@ export class MarblesOverviewComponent implements OnInit {
 
   backgroundPageConnection;
 
+  valueToHighlight;
+
   constructor(private zone: NgZone,
               private cd: ChangeDetectorRef) {
   }
@@ -86,8 +88,9 @@ export class MarblesOverviewComponent implements OnInit {
     return this.rxDevtoolsObservableData[observableId].name;
   }
 
-  valueSelectedEvent(value: string) {
-    this.valueSelected = value;
+  valueSelectedEvent(value) {
+    this.valueToHighlight = value;
+    this.valueSelected = value.value;
     this.cd.detectChanges();
   }
 

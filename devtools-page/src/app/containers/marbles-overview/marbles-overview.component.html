@@ -17,12 +17,14 @@
         <div *ngFor="let parentObs of observableSelected.value.obsParents">
           <div>The last stream of the '{{getParentObsName(parentObs)}}' stream</div>
           <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                              [valueToHighlight]="valueToHighlight"
                               [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
         </div>
       </div>
       <div *ngFor="let operator of observableSelected.value.operators">
         <app-operator [name]="operator.operatorName"></app-operator>
         <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                            [valueToHighlight]="valueToHighlight"
                             [values]="operator.values"></app-marble-diagram>
       </div>
     </div>

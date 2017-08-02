@@ -9,6 +9,10 @@ circle {
   fill: rgb(130, 215, 54);
 }
 
+circle.selected {
+  fill: lightblue;
+}
+
 .marbleContent {
   user-select: none;
   width: 100%;

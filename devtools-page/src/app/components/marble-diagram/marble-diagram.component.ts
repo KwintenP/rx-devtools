@@ -8,6 +8,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 export class MarbleDiagramComponent implements OnInit {
   @Input()
   values: [{ percentage: number, value: any }];
+  @Input()
+  valueToHighlight;
   @Output()
   valueSelected = new EventEmitter<any>();
 
@@ -17,4 +19,11 @@ export class MarbleDiagramComponent implements OnInit {
   ngOnInit() {
   }
 
+  marbleClicked(value) {
+    this.valueSelected.emit(value);
+  }
+
+  isValueSelected(value) {
+    return value === this.valueToHighlight;
+  }
 }
