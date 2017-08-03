@@ -114,6 +114,20 @@ That's it, you should be ready to get started ;).
 * This is a non-exhaustive list. The extension will definitely support more operators as of today but they aren't all properly tested. The ones above have been tested and should be working.
 
 
+### Integration with external libraries
+
+This extension heavily depends on the monkeypatching of functions of the RxJS library. Whilst this will work in most cases, it will not work in some cases. Certain libraries (such as @ngrx/store) will implement their own 'Observable' by implementing the 'Observable' interface. For the library to work, you must monkeypatch this implementing class yourself. The library will provide you with the tools to do so.
+
+Here is how you do it for @ngrx/store.
+
+```typescript
+ const monkeyPathStoreLift = function () {
+    const originalLift = Store.prototype.lift;
+    Store.prototype.lift = liftMonkeyPatchFunction(originalLift);
+  };
+  monkeyPathStoreLift();
+```
+
 #### TODO
 
 - [ ] Make the recording timeframe resettable
