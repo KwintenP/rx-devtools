@@ -128,6 +128,8 @@ Here is how you do it for @ngrx/store.
   monkeyPathStoreLift();
 ```
 
+You can copy this method and replace the `Store.prototype.lift` with the specific Observable you want to debug and you should be ready to go. As with the setup, try to avoid having this code in your production build.
+
 #### TODO
 
 - [ ] Make the recording timeframe resettable
