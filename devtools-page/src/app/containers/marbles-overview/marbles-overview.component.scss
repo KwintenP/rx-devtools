@@ -1,0 +1,102 @@
+.tab-bar {
+  background-color: #efefef;
+  border-bottom: 1px solid #ccc;
+  height: 26px;
+}
+
+.main {
+  display: flex;
+  height: 100vh;
+
+  > .list {
+    //display: block;
+    //vertical-align: top;
+    width: 160px;
+    //height: 100vh;
+    background-color: #efefef;
+    border-right: 1px solid #aaa;
+
+    > .action-bar {
+      border-bottom: 1px solid #ccc;
+      height: 26px;
+      > .action {
+        color: #666;
+        line-height: 26px;
+        padding-left: 8px;
+        font-size: 15px;
+        &:hover {
+          color: #333;
+        }
+        &::after {
+          content: "";
+          margin-left: 8px;
+          border-left: 1px solid #ccc;
+        }
+      }
+    }
+
+    > ul {
+      list-style-type: none;
+      display: block;
+      margin: 2px 0;
+      padding: 0;
+
+      > li {
+        &.tree-item {
+          text-transform: uppercase;
+          padding: 0 10px;
+          white-space: nowrap;
+          margin-top: 1px;
+          color: rgb(92, 110, 129);
+          text-shadow: rgba(255, 255, 255, 0.75) 0 1px 0;
+          line-height: 18px;
+          height: 18px;
+        }
+        &.observable {
+          height: 35px;
+          line-height: 35px;
+          padding-left: 8px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          &.selected {
+            background-color: #3879D9;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  > .visualisation {
+    display: flex;
+    width: 100%;
+    > .stream-visualisation {
+      font-size: 150%;
+    }
+
+    > .stream-value {
+    }
+
+    @media screen and (max-width: 999px) {
+      > .stream-visualisation, > .stream-value {
+        height: 50%;
+        flex-direction: column;
+      }
+    }
+
+    @media screen and (min-width: 1000px) {
+      > .stream-visualisation, > .stream-value {
+        width: 50%;
+        flex-direction: row;
+      }
+    }
+  }
+}
+
+.item-value {
+  display: block;
+}
+
+.selected {
+  background-color: rgb(130, 215, 54);
+}

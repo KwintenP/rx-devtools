@@ -1,4 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+  margin:0;
+  font-family: Roboto, Ubuntu, Arial, sans-serif;
+  font-size: 12px;
+}
+
 .sandboxRoot {
   background: rgb(255, 255, 255);
   width: 820px;

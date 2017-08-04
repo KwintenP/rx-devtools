@@ -5,7 +5,7 @@ declare const chrome;
 @Component({
   selector: 'app-marbles-overview',
   templateUrl: './marbles-overview.component.html',
-  styleUrls: ['./marbles-overview.component.css']
+  styleUrls: ['./marbles-overview.component.scss']
 })
 // TODO: refactor this shitty class. Put data connection in separate service, let it flow with observables to the view layer
 export class MarblesOverviewComponent implements OnInit {

@@ -1,41 +1,51 @@
-<div class="main" *ngIf="hasData(); else info">
-  <div class="list">
-    <button type="button" (click)="clearData()">Clear data</button>
-    <ul>
-      <li *ngFor="let observable of keyValuesOfData()"
-          (click)="observableSelectedInList(observable)"
-          [class.selected]="observable?.key === observableSelected?.key">
-        {{observable.value.name}}
-      </li>
-    </ul>
-  </div>
-  <div
-    *ngIf="observableSelected;"
-    class="sandboxRoot item">
-    <div>
-      <div *ngIf="observableSelected.value.standalone">
-        <div *ngFor="let parentObs of observableSelected.value.obsParents">
-          <div>The last stream of the '{{getParentObsName(parentObs)}}' stream</div>
-          <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
-                              [valueToHighlight]="valueToHighlight"
-                              [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
+<!--<div class="tab-bar"></div>-->
+
+<div class="main">
+    <div class="list">
+        <div class="action-bar">
+            <i class="fa fa-ban fa-flip-vertical action"
+               title="clear streams"
+               (click)="clearData()"></i>
         </div>
-      </div>
-      <div *ngFor="let operator of observableSelected.value.operators">
-        <app-operator [name]="operator.operatorName"></app-operator>
-        <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
-                            [valueToHighlight]="valueToHighlight"
-                            [values]="operator.values"></app-marble-diagram>
-      </div>
+        <ul>
+            <li class="tree-item">Active streams</li>
+            <li class="observable" *ngFor="let observable of keyValuesOfData()"
+                (click)="observableSelectedInList(observable)"
+                [class.selected]="observable?.key === observableSelected?.key">
+                {{observable.value.name}}
+            </li>
+        </ul>
     </div>
-  </div>
-  <div class="item item-value">
+    <div class="visualisation" *ngIf="hasData(); else info">
+        <div class="sandboxRoot item stream-visualisation">
+            <div *ngIf="observableSelected;">
+                <div *ngIf="observableSelected.value.standalone">
+                    <div *ngFor="let parentObs of observableSelected.value.obsParents">
+                        <div>The last stream of the '{{getParentObsName(parentObs)}}' stream</div>
+                        <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                                            [valueToHighlight]="valueToHighlight"
+                                            [values]="getLastMarbleDiagram(parentObs)"></app-marble-diagram>
+                    </div>
+                </div>
+                <div *ngFor="let operator of observableSelected.value.operators">
+                    <app-operator [name]="operator.operatorName"></app-operator>
+                    <app-marble-diagram (valueSelected)="valueSelectedEvent($event)"
+                                        [valueToHighlight]="valueToHighlight"
+                                        [values]="operator.values"></app-marble-diagram>
+                </div>
+            </div>
+        </div>
+        <div class="item item-value stream-value">
     <pre>
       {{valueSelected | prettyprint}}
     </pre>
-  </div>
+        </div>
+    </div>
 </div>
 <ng-template #info>
-  <div>The extension can be used to visualize streams in your application using marble diagrams. For the extension to work, this tab should be opened first, refresh your application afterwards.
-    It will be possible to start recording whenever you please in a later phase (this is being developed right now). Please check our Github (https://github.com/kwintenp/rx-devtools) for more information and development.</div>
+    <div>The extension can be used to visualize streams in your application using marble diagrams. For the extension to
+        work, this tab should be opened first, refresh your application afterwards.
+        It will be possible to start recording whenever you please in a later phase (this is being developed right now).
+        Please check our Github (https://github.com/kwintenp/rx-devtools) for more information and development.
+    </div>
 </ng-template>
