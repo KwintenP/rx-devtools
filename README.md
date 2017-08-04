@@ -110,6 +110,7 @@ That's it, you should be ready to get started ;).
 | CombineLatest | yes     |    0.0.1-alpha.29 |
 | Zip | yes     |    0.0.1-alpha.29 |
 | Concat | yes     |    0.0.1-alpha.29 |
+| Merge | yes     |    0.0.1-alpha.29 |
 
 * This is a non-exhaustive list. The extension will definitely support more operators as of today but they aren't all properly tested. The ones above have been tested and should be working.
 
