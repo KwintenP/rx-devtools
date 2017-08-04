@@ -152,9 +152,12 @@ export const liftMonkeyPatchFunction = (originalLift) => {
         // Might not always be correct but in most of the cases it will
         if (operator instanceof MergeAllOperator && (operator as any).concurrent === 1) {
           opName = 'Concat';
+        } else if (operator instanceof MergeAllOperator) {
+          opName = 'Merge';
         } else {
           opName = operator.constructor.name.substring(0, operator.constructor.name.indexOf("Operator"));
         }
+
         (operator as any).__rx_operator_dev_tools_id = opName + "-" + uuid();
         (operator as any).__rx_observable_dev_tools_id = newObs.__rx_observable_dev_tools_id;
         const rxDevtoolsObservable = {
@@ -230,7 +233,7 @@ const sendMessage = (message: any) => {
       message: message,
       source: 'rx-devtools-plugin'
     }, '*');
-  } catch(ex) {
+  } catch (ex) {
     console.log('error sending something to the plugin', ex);
   }
 };
