@@ -35,4 +35,8 @@ export class MarbleDiagramComponent implements OnInit {
   isCompleteEvent(type) {
     return EVENT_TYPE.COMPLETE === type;
   }
+
+  isErrorEvent(type) {
+    return EVENT_TYPE.ERROR === type;
+  }
 }

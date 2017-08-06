@@ -15,9 +15,14 @@
         <line *ngIf="isCompleteEvent(value.type)"
               class="end-marker" x1="0.5" x2="0.5" y1="1.3" y2="-0.3"
               style="stroke: black; stroke-width: 0.08; cursor: ew-resize; z-index: 0;"></line>
+        <g *ngIf="isErrorEvent(value.type)">
+          <line class="end-marker" x1="-0.3" x2="1.3" y1="-0.3" y2="1.3"
+                style="stroke: black; stroke-width: 0.08; cursor: ew-resize; z-index: 0;"></line>
+          <line class="end-marker" x1="1.3" x2="-0.3" y1="-0.3" y2="1.3"
+                style="stroke: black; stroke-width: 0.08; cursor: ew-resize; z-index: 0;"></line>
+        </g>
       </svg>
-      <p *ngIf="!isCompleteEvent(value.type)"
-         class="marbleContent">{{i}}</p>
+      <p class="marbleContent">{{i}} {{value.type}}</p>
     </div>
   </div>
 </div>
