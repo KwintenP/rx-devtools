@@ -22,7 +22,8 @@
                 style="stroke: black; stroke-width: 0.08; cursor: ew-resize; z-index: 0;"></line>
         </g>
       </svg>
-      <p class="marbleContent">{{i}} {{value.type}}</p>
+      <p *ngIf="isNextEvent(value.type)"
+         class="marbleContent">{{i}}</p>
     </div>
   </div>
 </div>
