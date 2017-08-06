@@ -2,13 +2,13 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Subscriber} from 'rxjs/Subscriber';
 import {v4 as uuid} from 'uuid';
-import {DebugOperator} from './operator/debug';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {MergeAllOperator} from 'rxjs/operator/mergeAll';
+import {DebugOperator} from 'rx-devtools/operator/debug';
 declare const require;
 
 export const monkeyPatchOperator = function (operator) {
@@ -221,8 +221,49 @@ export const monkeyPatchNext = function () {
   };
 }
 
+export const monkeyPatchError = function () {
+  const error = Subscriber.prototype.error;
+  Subscriber.prototype.error = function (args) {
+    if (this.__rx_observable_dev_tools_id) {
+      sendMessage({
+        name: 'ERROR_EVENT',
+        value: {
+          id: this.__rx_observable_dev_tools_id,
+          data: {
+            operatorId: this.__rx_operator_dev_tools_id,
+            value: args,
+            percentage: time
+          }
+        }
+      });
+    }
+    return error.call(this, args);
+  };
+}
+
+export const monkeyPatchComplete = function () {
+  const complete = Subscriber.prototype.complete;
+  Subscriber.prototype.complete = function () {
+    if (this.__rx_observable_dev_tools_id) {
+      sendMessage({
+        name: 'COMPLETE_EVENT',
+        value: {
+          id: this.__rx_observable_dev_tools_id,
+          data: {
+            operatorId: this.__rx_operator_dev_tools_id,
+            percentage: time
+          }
+        }
+      });
+    }
+    complete.call(this);
+  };
+}
+
 export const setupRxDevtools = () => {
   monkeyPatchNext();
+  monkeyPatchComplete();
+  monkeyPatchError();
   monkeyPatchLiftObservable();
   monkeyPatchLiftSubject();
 }
