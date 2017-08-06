@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {EVENT_TYPE} from '../../entities/rx-devtools-observable.entity';
 
 @Component({
   selector: 'app-marble-diagram',
@@ -7,7 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 })
 export class MarbleDiagramComponent implements OnInit {
   @Input()
-  values: [{ percentage: number, value: any }];
+  values: [{ percentage: number, value: any, type: EVENT_TYPE }];
   @Input()
   valueToHighlight;
   @Output()
@@ -25,5 +26,13 @@ export class MarbleDiagramComponent implements OnInit {
 
   isValueSelected(value) {
     return value === this.valueToHighlight;
+  }
+
+  isNextEvent(type) {
+    return EVENT_TYPE.NEXT === type;
+  }
+
+  isCompleteEvent(type) {
+    return EVENT_TYPE.COMPLETE === type;
   }
 }

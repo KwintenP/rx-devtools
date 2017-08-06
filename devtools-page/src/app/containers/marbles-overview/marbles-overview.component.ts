@@ -1,5 +1,5 @@
-import {Component, NgZone, OnInit, ChangeDetectorRef} from '@angular/core';
-import {RxDevtoolsObservable} from '../../entities/rx-devtools-observable.entity';
+import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {EVENT_TYPE, RxDevtoolsObservable} from '../../entities/rx-devtools-observable.entity';
 declare const chrome;
 
 @Component({
@@ -60,7 +60,27 @@ export class MarblesOverviewComponent implements OnInit {
               return operator.operatorId === message.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value});
+              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value, type: EVENT_TYPE.NEXT});
+            }
+          }
+          break;
+        case 'ERROR_EVENT':
+          if (this.rxDevtoolsObservableData[message.value.id]) {
+            const foundOperator = this.rxDevtoolsObservableData[message.value.id].operators.find(operator => {
+              return operator.operatorId === message.value.data.operatorId
+            });
+            if (foundOperator) {
+              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value, type: EVENT_TYPE.ERROR});
+            }
+          }
+          break;
+        case 'COMPLETE_EVENT':
+          if (this.rxDevtoolsObservableData[message.value.id]) {
+            const foundOperator = this.rxDevtoolsObservableData[message.value.id].operators.find(operator => {
+              return operator.operatorId === message.value.data.operatorId
+            });
+            if (foundOperator) {
+              foundOperator.values.push({percentage: message.value.data.percentage, type: EVENT_TYPE.COMPLETE});
             }
           }
           break;
