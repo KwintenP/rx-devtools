@@ -4,7 +4,7 @@ import {EVENT_TYPE} from '../../entities/rx-devtools-observable.entity';
 @Component({
   selector: 'app-marble-diagram',
   templateUrl: './marble-diagram.component.html',
-  styleUrls: ['./marble-diagram.component.css']
+  styleUrls: ['./marble-diagram.component.scss']
 })
 export class MarbleDiagramComponent implements OnInit {
   @Input()
