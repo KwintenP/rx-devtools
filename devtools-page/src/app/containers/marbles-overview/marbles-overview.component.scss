@@ -9,10 +9,7 @@
   height: 100vh;
 
   > .list {
-    //display: block;
-    //vertical-align: top;
-    width: 160px;
-    //height: 100vh;
+    flex: 0 0 160px;
     background-color: #efefef;
     border-right: 1px solid #aaa;
 
@@ -68,26 +65,30 @@
   }
 
   > .visualisation {
+    flex: 1 0;
     display: flex;
-    width: 100%;
     > .stream-visualisation {
       font-size: 150%;
+      overflow-y: scroll;
     }
 
     > .stream-value {
+      overflow-y: scroll;
     }
 
     @media screen and (max-width: 999px) {
+      flex-direction: column;
       > .stream-visualisation, > .stream-value {
-        height: 50%;
-        flex-direction: column;
+        flex: 1 0;
+        max-height: 50%;
       }
     }
 
     @media screen and (min-width: 1000px) {
+      flex-direction: row;
       > .stream-visualisation, > .stream-value {
-        width: 50%;
-        flex-direction: row;
+        flex: 1 0;
+        max-height: 100%;
       }
     }
   }
