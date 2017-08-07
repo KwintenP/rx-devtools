@@ -1,6 +1,7 @@
 <div class="main" *ngIf="hasData(); else info">
   <div class="list">
     <button type="button" (click)="clearData()">Clear data</button>
+    <button type="button" (click)="clearTimer()">Reset timer</button>
     <ul>
       <li *ngFor="let observable of keyValuesOfData()"
           (click)="observableSelectedInList(observable)"

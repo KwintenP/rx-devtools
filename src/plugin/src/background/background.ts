@@ -10,8 +10,8 @@ chrome.runtime.onConnect.addListener(function (port) {
       return;
     } else if (message.name === "RESET_TIMER") {
       chrome.tabs.get(message.tabId, function(tab) {
-        chrome.tabs.sendMessage(tab.id, {greeting: "hello"}, function(response) {
-          console.log(response.farewell);
+        chrome.tabs.sendMessage(tab.id, message.name, function(response) {
+          console.log(response);
         });
       });
     }
