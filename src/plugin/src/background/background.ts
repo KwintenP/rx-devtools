@@ -9,7 +9,6 @@ chrome.runtime.onConnect.addListener(function (port) {
       connections[message.tabId] = port;
       return;
     } else if (message.name === "RESET_TIMER") {
-      console.log('entered in the background');
 
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
