@@ -21,6 +21,16 @@
         line-height: 26px;
         padding-left: 8px;
         font-size: 15px;
+        position: relative;
+        > .badge {
+          position: absolute;
+          font-size: 10px;
+          bottom: 4px;
+          right: 5px;
+          &.red{
+            color:#d00;
+          }
+        }
         &:hover {
           color: #333;
         }
