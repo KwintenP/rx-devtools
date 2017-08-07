@@ -8,7 +8,7 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {MergeAllOperator} from 'rxjs/operator/mergeAll';
-import {DebugOperator} from 'rx-devtools/operator/debug';
+import {DebugOperator} from './operator/debug';
 declare const require;
 
 export const monkeyPatchOperator = function (operator) {

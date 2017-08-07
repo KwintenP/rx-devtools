@@ -38,10 +38,8 @@ window.addEventListener('message', function (event: { source: any, data: any }) 
 });
 
 chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-      "from a content script:" + sender.tab.url :
-      "from the extension");
-    if (request.greeting == "hello")
-      sendResponse({farewell: "goodbye"});
-  });
+  function (request, sender, sendResponse) {
+    console.log('request', request);
+    window.postMessage(request, '*');
+  }
+);
