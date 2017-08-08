@@ -16,10 +16,23 @@
     > .action-bar {
       border-bottom: 1px solid #ccc;
       height: 26px;
-      > .action {
+      padding-left: 4px;
+      > .action-group {
+        display: inline-block;
+        &::after {
+          content: "";
+          margin-right: 1px;
+          padding-left: 1px;
+          border-left: 1px solid #ccc;
+        }
+      }
+      > .action, > .action-group > .action {
         color: #666;
+        display: inline-block;
+        width: 26px;
+        height: 26px;
         line-height: 26px;
-        padding-left: 8px;
+        text-align: center;
         font-size: 15px;
         position: relative;
         > .badge {
@@ -27,17 +40,12 @@
           font-size: 10px;
           bottom: 4px;
           right: 5px;
-          &.red{
-            color:#d00;
+          &.red {
+            color: #d00;
           }
         }
         &:hover {
           color: #333;
-        }
-        &::after {
-          content: "";
-          margin-left: 8px;
-          border-left: 1px solid #ccc;
         }
       }
     }
