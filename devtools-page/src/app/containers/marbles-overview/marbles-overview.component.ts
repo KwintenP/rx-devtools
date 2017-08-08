@@ -134,9 +134,15 @@ export class MarblesOverviewComponent implements OnInit {
     this.rxDevtoolsObservableData = {};
     this.valueSelected = undefined;
     this.observableSelected = undefined;
+
+    this.sendResetTimerToLib();
   }
 
   clearTimer() {
+    this.sendResetTimerToLib();
+  }
+
+  private sendResetTimerToLib() {
     this.backgroundPageConnection.postMessage({
       name: 'RESET_TIMER',
       tabId: chrome.devtools.inspectedWindow.tabId
