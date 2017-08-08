@@ -12,6 +12,7 @@ import { MarbleDiagramComponent } from './components/marble-diagram/marble-diagr
 import { OperatorComponent } from './components/operator/operator.component';
 import { PrettyPrintJsonPipe } from './pretty-print-json.pipe';
 import {MarblesOverviewComponent} from './containers/marbles-overview/marbles-overview.component';
+import {StorageService} from './services/storage.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,9 @@ import {MarblesOverviewComponent} from './containers/marbles-overview/marbles-ov
     HttpModule,
     CommonModule
   ],
-  providers: [],
+  providers: [
+    StorageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
