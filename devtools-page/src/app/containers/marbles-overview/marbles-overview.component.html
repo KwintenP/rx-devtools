@@ -1,14 +1,16 @@
 <div class="main">
     <div class="list">
         <div class="action-bar">
-            <i class="fa fa-ban fa-flip-vertical action"
-               title="clear streams"
-               (click)="clearData()"></i>
-            <i class="fa fa-clock-o action"
-               title="reset timer"
-               (click)="clearTimer()">
-                <i class="fa fa-times badge red"></i>
-            </i>
+            <div class="action-group">
+                <i class="fa fa-ban fa-flip-vertical action"
+                   title="clear streams"
+                   (click)="clearData()"></i>
+                <i class="fa fa-clock-o action"
+                   title="reset timer"
+                   (click)="clearTimer()">
+                    <i class="fa fa-times badge red"></i>
+                </i>
+            </div>
         </div>
         <ul>
             <li class="tree-item">Active streams</li>
