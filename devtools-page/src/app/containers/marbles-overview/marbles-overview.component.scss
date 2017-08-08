@@ -57,6 +57,7 @@
       padding: 0;
 
       > li {
+        cursor: pointer;
         &.tree-item {
           text-transform: uppercase;
           padding: 0 10px;
