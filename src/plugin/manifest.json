@@ -10,6 +10,9 @@
     ],
     "persistent": false
   },
+  "permissions": [
+    "storage"
+  ],
   "content_scripts": [{
     "matches": [
       "<all_urls>"

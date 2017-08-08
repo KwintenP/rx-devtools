@@ -1,6 +1,11 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {EVENT_TYPE, RxDevtoolsObservable} from '../../entities/rx-devtools-observable.entity';
+import {StorageService} from '../../services/storage.service';
 declare const chrome;
+
+const RESET_TIMER = 'RESET_TIMER';
+const SET_RECORDING_TIMER = 'SET_RECORDING_TIMER';
+const RX_DEVTOOLS_PAGE_INIT = 'RX_DEVTOOLS_PAGE_INIT';
 
 @Component({
   selector: 'app-marbles-overview',
@@ -10,7 +15,7 @@ declare const chrome;
 // TODO: refactor this shitty class. Put data connection in separate service, let it flow with observables to the view layer
 export class MarblesOverviewComponent implements OnInit {
   observableSelected: RxDevtoolsObservable;
-  time;
+  recordingTime;
 
   rxDevtoolsObservableData: { [id: string]: RxDevtoolsObservable } = {};
   valueSelected;
@@ -20,7 +25,8 @@ export class MarblesOverviewComponent implements OnInit {
   valueToHighlight;
 
   constructor(private zone: NgZone,
-              private cd: ChangeDetectorRef) {
+              private cd: ChangeDetectorRef,
+              private storageService: StorageService) {
   }
 
   ngOnInit() {
@@ -28,10 +34,18 @@ export class MarblesOverviewComponent implements OnInit {
 
     this.backgroundPageConnection.onMessage.addListener(this.runInZone.bind(this));
 
+    this.sendMessageToLib(RX_DEVTOOLS_PAGE_INIT);
+
     this.backgroundPageConnection.postMessage({
       name: 'rx-devtools-page-init',
       tabId: chrome.devtools.inspectedWindow.tabId
     });
+
+    this.storageService.setRecordingTime(15);
+
+    this.storageService.getRecordingTime()
+      .take(1)
+      .subscribe(recordingTime => this.sendMessageToLib(SET_RECORDING_TIMER, recordingTime));
   }
 
   private runInZone(message, sender, sendResponse) {
@@ -60,7 +74,11 @@ export class MarblesOverviewComponent implements OnInit {
               return operator.operatorId === message.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value, type: EVENT_TYPE.NEXT});
+              foundOperator.values.push({
+                percentage: message.value.data.percentage,
+                value: message.value.data.value,
+                type: EVENT_TYPE.NEXT
+              });
             }
           }
           break;
@@ -70,7 +88,11 @@ export class MarblesOverviewComponent implements OnInit {
               return operator.operatorId === message.value.data.operatorId
             });
             if (foundOperator) {
-              foundOperator.values.push({percentage: message.value.data.percentage, value: message.value.data.value, type: EVENT_TYPE.ERROR});
+              foundOperator.values.push({
+                percentage: message.value.data.percentage,
+                value: message.value.data.value,
+                type: EVENT_TYPE.ERROR
+              });
             }
           }
           break;
@@ -143,8 +165,13 @@ export class MarblesOverviewComponent implements OnInit {
   }
 
   private sendResetTimerToLib() {
+    this.sendMessageToLib(RESET_TIMER);
+  }
+
+  private sendMessageToLib(type: string, value?: any) {
     this.backgroundPageConnection.postMessage({
-      name: 'RESET_TIMER',
+      type,
+      value,
       tabId: chrome.devtools.inspectedWindow.tabId
     });
   }
