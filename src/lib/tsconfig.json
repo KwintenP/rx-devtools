@@ -3,6 +3,7 @@
     "declaration": true,
     "module": "commonjs",
     "target": "es5",
+    "sourceRoot": "./src",
     "noImplicitAny": false,
     "sourceMap": true,
     "outDir": "release",

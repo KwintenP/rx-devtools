@@ -107,6 +107,9 @@ export const liftMonkeyPatchFunction = (originalLift) => {
         }
         // this is probably an array observable
         // check if all of the source observables are in debug mode
+
+        // TODO: even if not all the observables are in debug mode, it should be possible to debug the next one
+        // without having an extra source in that case
         let stop = this.array && this.array.length === 0;
         let singleObservableDevtoolsId;
         this.array.forEach(obs => {
