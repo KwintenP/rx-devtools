@@ -4,7 +4,7 @@ This is a chrome extension that can be used to visualize RxJS streams in realtim
 
 **Disclaimer:** This project started out as a POC to see if it was possible to visualize RxJS streams. It was later redefined as a chrome extension. This project is still a WIP. I encourage you to use it but remember, at this moment in time it is still in **an early alpha phase** and might not always work properly. I haven't properly tested all the operators, check the table below to see which ones should be working as of the current version. Feel free to create github issues when you discover problems, I will try to tackle them asap.
 
-**Disclaimer2:** With the arrival of lettable operators (see ![test](https://github.com/ReactiveX/rxjs/blob/master/doc/lettable-operators.md)) the core of how RxJS code is written will need to be updated. This will also affect this project. Currently, lettable operators will not work with this project.
+**Disclaimer2:** With the arrival of lettable operators (see ![here](https://github.com/ReactiveX/rxjs/blob/master/doc/lettable-operators.md)) the core of how RxJS code is written will need to be updated. This will also affect this project. Currently, lettable operators will not work with this project.
  
 ### Installation
 
